@@ -1,5 +1,72 @@
 \documentclass[a4paper]{article}
 
+\title{Rapport de stage}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}
+\usepackage{amsmath}
+\usepackage{eufrak}
+\usepackage{graphicx}
+
+\newtheorem{Rem}{Remarque}[subsection]
+\newtheorem{Ex}{Exemple}[subsection]
+\newtheorem{Def}{Définition}
+\newtheorem{Prop}{Proposition}
+
 \begin{document}
-Rapport de stage
+\author{Quentin Honoré}
+\date{}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{Introduction}
+
+\section{Les plans projectifs finis}
+\subsection{Définition}
+Soit P l'ensemble fini des points et D $ \subseteq \mathfrak{P} $ l'ensemble des droites.
+(P,D) est un plan projectif fini si et seulement si: \\
+$\cdot$ Par deux points distincts passe une unique droite. \\
+$\cdot$ Deux droites distinctes se coupent en un unique point. \\
+$\cdot$ Il existe un quadrilatère (4 points tels que pour chaque triplet, les 3 points ne sont pas alignés).
+
+\begin{Rem}
+$\cdot$ Les 2 premières propositions sont symétriques. \\ 
+\end{Rem}
+  
+\begin{Ex}
+  On va construire un plan projectif fini d'ordre 3 (3 points par droite, et 3 droites se coupent en chaque point). On construit d'abord un quadrilatère. Puis on construit les intersections entre les 2 droites horizontales, les 2 droites verticales et les diagonales. Ces intersections sont les intersections "à l'infini".
+\begin{center}
+\includegraphics{test_tikz.pdf}
+\end{center}
+Les 3 propositions sont bien vérifiées.
+\end{Ex}
+
+\begin{Ex}
+Le jeu du Dobble est un bon exemple de plan projectif fini. Si vous ne le connaissez pas, le Dobble est un jeu composé de 57 cartes sur lesquelles sont dessinés 8 objets différents. Ces cartes sont construites de telle manière que pour toute paire de carte, il y ait un et un seul objet en commun. \\
+On peut alors facilement voir l'analogie avec les plans projectifs finis. Considérons que les cartes sont les droites et les objets les points. Deux droites distinctes se coupent en un unique point (ie. pour deux cartes, il y a un unique objet en commun). On pourra alors vérifier que si l'on choisit deux objets différents, une seule carte contient ces deux symboles. Et enfin, on peut choisir 4 objets, tels qu'on ne peut pas trouver 3 d'entres eux sur la même carte.
+\begin{center}
+\includegraphics[scale=0.3]{dobble-2.jpg}
+\end{center}
+\end{Ex}
+\begin{Prop}
+Toutes les droites contiennent le même nombre de points. Par symétrie, par tout point passe le même nombre de droites. Soit k+1 ($k>=2$) ce nombre alors:
+\begin{center}
+$card(D)=card(P)=k^2+k+1$
+\end{center}
+\end{Prop}
+En effet, si on considère un point P, k+1 droites passent par ce point. Sur chacune de ces droites, il y a k+1 points, donc k si on ne compte pas le point P. On a donc k(k+1) points en plus du point P, soit:	$card(P)=k(k+1)+1=k^2+k+1$
+
+\begin{Rem}
+On ne peut pas avoir de plan projectif de cardinal 6,8,9,10,11,12,14...: \\
+$2^2+2+1=7$ \\
+$3^2+3+1=13$
+\end{Rem}  
+  
+\subsection{Corps Fini}
+  
+  
+  
+  
+  
 \end{document}
