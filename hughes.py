@@ -61,6 +61,7 @@ def HughesPlane(A, n2):
     v = K.list()
 # Construct the points (x,y,z) of the projective plane, (x,y,z)=(xk,yk,zk)
     points=[[x,y,z] for x in v for y in v for z in v if [x,y,z] != [0,0,0] if normalise([x,y,z],K,n) == [x,y,z]]
+    relabel={tuple(points[i]):i for i in range(len(points))}
     blcks = []
 # Find the first line satisfying x+ay+z=0
     for a in v:
@@ -71,12 +72,12 @@ def HughesPlane(A, n2):
                     l.append(vector(p))
 # We can now deduce the other lines from these ones
             blcks.append(l)
-            for i in range(n2 + n + 1):
-                l = [A*i for i in l]
+            for i in range(n2 + n):
+                l = [A*j for j in l]
                 blcks.append(l)
     for b in blcks:
         for p in range(len(b)):
-            b[p]=normalise(b[p],K,n)
-    return blcks
+            b[p]=relabel[tuple(normalise(b[p],K,n))]
+    return IncidenceStructure(n4+n2+1, blcks, name="Hughes projective plane of order %d"%n2)
                 
     
