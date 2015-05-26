@@ -81,7 +81,7 @@ def HughesPlane(n2):
             l=[]
             l.append(vector((-a,K(1),K(0))))
             for x in v:
-                if ~a*(-x-K(1)).is_square():
+                if (~a*(-x-K(1))).is_square():
                     l.append(vector((x,~a*(-x-K(1)),K(1))))
                 else:
                     l.append(vector((x,~a **n * (-x-K(1)),K(1))))
