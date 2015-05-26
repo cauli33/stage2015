@@ -1,25 +1,23 @@
+from sage.categories.sets_cat import EmptySetError
+
 def find_hughes_matrix(q):
     M = GL(3,GF(q))
-    l = []
     for m in M:
-        if is_hughes_matrix(m,q):
-            l.append(m)
-    return l
+        o = gap.Order(m._gap_())
+        if o >= q**2 + q + 1:
+            if is_hughes_matrix(m,q,o):
+                yield m
 
-def is_hughes_matrix(m,q):
-    p= (m**(q**2+q+1)).matrix()
+def is_hughes_matrix(m,q,o):
+    p= m.matrix()**(q**2 + q + 1)
     if not p[0,0]==p[1,1]==p[2,2]!=0 or not p[0,1]==p[0,2]==p[1,0]==p[1,2]==p[2,0]==p[2,1]==0:
         return False
-    for i in range(1,q**2+q+1):
-        p = (m**i).matrix()
-        if p[0,0]==p[1,1]==p[2,2]!=0 and p[0,1]==p[0,2]==p[1,0]==p[1,2]==p[2,0]==p[2,1]==0:
-            return False
+    for i in divisors(int(o)):
+        if i < q**2 + q + 1:
+            p = (m**i).matrix()
+            if p[0,0]==p[1,1]==p[2,2]!=0 and p[0,1]==p[0,2]==p[1,0]==p[1,2]==p[2,0]==p[2,1]==0:
+                return False
     return True
-
-def inverse(x,F):
-    for i in F.list():
-        if x*i==1:
-            return i
 
 def op(x,y,q):
     if y.is_square():
@@ -31,45 +29,66 @@ def normalise(p,K,q):
     if type(p) != list :
         p = list(p)
     for i in range(3):
-        if p[2-i] !=  1 and p[2-i] != 0:
-            k=inverse(p[2-i],K)
+        if p[2-i] == 1:
+            break
+        elif p[2-i] != 0:
+            k=~p[2-i]
             if k.is_square():
                 for j in range(3-i):
                     p[j] *= k
                 for j in range(3-i,3):
-                    p[j] = K.list()[0] 
+                    p[j] = K(0) 
                 break
             else:
                 for j in range(3-i):
                     p[j]= p[j]**q * k**q
                 for j in range(3-i,3):
-                    p[j] = K.list()[0] 
+                    p[j] = K(0) 
                 break
-        if p[2-i] == 1:
-            break
     return p
         
         
-def HughesPlane(A, n2):
+def HughesPlane(n2):
+    r"""
+    Return the Hughes projective plane of order ``n2``.
+    
+    INPUT:
+
+    - ``n2`` -- an integer which must be an odd square
+
+    EXAMPLES::
+
+
+
+    """
+    
     if not n2.is_square():
         raise EmptySetError("No Hughes plane of non-square order exists.")
     if n2%2 == 0:
         raise EmptySetError("No Hughes plane of even order exists.")
     n = n2.sqrt()
-    n4 = n2**2
+    A = find_hughes_matrix(n).next()
     K = FiniteField(n2, 'x')
+    F = FiniteField(n, 'y')
     v = K.list()
 # Construct the points (x,y,z) of the projective plane, (x,y,z)=(xk,yk,zk)
-    points=[[x,y,z] for x in v for y in v for z in v if [x,y,z] != [0,0,0] if normalise([x,y,z],K,n) == [x,y,z]]
-    relabel={tuple(points[i]):i for i in range(len(points))}
+    points=[[x,y,K(1)] for x in v for y in v]+[[x,K(1),K(0)] for x in v]+[[K(1),K(0),K(0)]]
+    relabel={tuple(p):i for i,p in enumerate(points)}
     blcks = []
 # Find the first line satisfying x+ay+z=0
     for a in v:
-        if a not in FiniteField(n,'y') or a == 1:
-            l = []
-            for p in points:
-                if p[0] + op(a,p[1],n) + p[2] == 0:
-                    l.append(vector(p))
+        if a not in F or a == 1:
+            l=[]
+            l.append(vector((-a,K(1),K(0))))
+            for x in v:
+                if ~a*(-x-K(1)).is_square():
+                    l.append(vector((x,~a*(-x-K(1)),K(1))))
+                else:
+                    l.append(vector((x,~a **n * (-x-K(1)),K(1))))
+           # l = []
+           # for p in points:
+           #     if p[0] + op(a,p[1],n) + p[2] == 0:
+           #         l.append(vector(p))
 # We can now deduce the other lines from these ones
             blcks.append(l)
             for i in range(n2 + n):
@@ -78,6 +97,16 @@ def HughesPlane(A, n2):
     for b in blcks:
         for p in range(len(b)):
             b[p]=relabel[tuple(normalise(b[p],K,n))]
-    return IncidenceStructure(n4+n2+1, blcks, name="Hughes projective plane of order %d"%n2)
-                
+    return IncidenceStructure(n2**2+n2+1, blcks, name="Hughes projective plane of order %d"%n2)
+
+
+def classify(MH,n2):
+    S=([])
+    for i in range(10):
+        c=HughesPlane(MH[i],n2).canonical_label()
+        if c not in S:
+            S.append(c)
+    return S
     
+#P.relabel(P.canonical_label())
+#récupérer les matrices qui sont isomorphes
