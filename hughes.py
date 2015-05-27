@@ -1,6 +1,30 @@
 from sage.categories.sets_cat import EmptySetError
 
 def find_hughes_matrix(q):
+    r"""
+    Return the generator of matrix that have Hughes property.
+
+    INPUT:
+    - ``q`` (integer) - the dimension such that generated matrix are in GL(3,GF(q))
+
+    EXAMPLES::
+
+        sage: G=find_hughes_matrix(3)
+        sage: G.next()
+        [0 2 0]
+        [0 0 2]
+        [1 2 0]
+        sage: M = G.next()
+        sage: M
+        [0 2 0]
+        [0 0 2]
+        [2 2 0]
+        sage: M** (3**2 + 3 + 1)
+        [2 0 0]
+        [0 2 0]
+        [0 0 2]
+
+    """
     M = GL(3,GF(q))
     for m in M:
         o = gap.Order(m._gap_())
@@ -9,6 +33,39 @@ def find_hughes_matrix(q):
                 yield m
 
 def is_hughes_matrix(m,q,o):
+    r"""
+    Check whether the matrix has the Hughes property.
+    
+    INPUT:
+
+    - ``m`` - matrix in GL(3,GF(q))
+    
+    - ``q`` (integer)
+
+    - ``o`` (integer) - m order
+
+    EXAMPLES::
+
+        sage: G=find_hughes_matrix(3)
+        sage: M=G.next()
+        sage: o=gap.Order(M._gap_())
+        sage: is_hughes_matrix(M,3,o)
+        True
+        sage: M** (3**2 + 3 + 1)
+        [1 0 0]
+        [0 1 0]
+        [0 0 1]
+
+        sage: M=GL(3,GF(3))[10]
+        sage: o=gap.Order(M._gap_())
+        sage: is_hughes_matrix(M,3,o)
+        False
+        sage: M ** (3**2 + 3 + 1)
+        [0 2 1]
+        [2 1 2]
+        [2 0 1]
+
+    """
     p= m.matrix()**(q**2 + q + 1)
     if not p[0,0]==p[1,1]==p[2,2]!=0 or not p[0,1]==p[0,2]==p[1,0]==p[1,2]==p[2,0]==p[2,1]==0:
         return False
@@ -19,13 +76,42 @@ def is_hughes_matrix(m,q,o):
                 return False
     return True
 
-def op(x,y,q):
-    if y.is_square():
-        return x*y
-    else:
-        return x**q * y
+def normalize(p,K,q):
+    r"""
+    Return the normalized form of point (x,y,z).
 
-def normalise(p,K,q):
+    For all integer k non-zero, (x,y,z)k refers to the same point.
+
+    For the normalized form, the last non-zero coordinate must be 1.
+
+    INPUT:
+    
+    - ``p`` - point with the coordinates (x,y,z) (a list, a vector, a tuple...)
+
+    - ``K```- a finite field (coordinates x,y,z are elements of K)
+
+    - ``q`` - cardinality of K
+
+    OUTPUT:
+    List of the coordinates from the normalized form of p
+
+    EXAMPLE::
+
+        sage: K=FiniteField(9,'x')
+        sage: p=(K('x'),K('x+1'),K('x'))
+        sage: normalise(p,K,9)
+        [1, x, 1]
+        sage: q=vector((K('x'),K('x'),K('x')))
+        sage: normalise(q,K,9)
+        [1, 1, 1]
+        sage: s=(K('2*x+2'), K(0), K(0))
+        sage: normalise(s,K,9)
+        [1, 0, 0]
+        sage: t=[K('2*x'),K(1),K(0)]
+        sage: normalise(t,K,9)
+        [2*x, 1, 0]
+
+    """
     if type(p) != list :
         p = list(p)
     for i in range(3):
@@ -50,18 +136,30 @@ def normalise(p,K,q):
         
 def HughesPlane(n2):
     r"""
-    Return the Hughes projective plane of order ``n2``.
+    Return Hughes projective plane of order ``n2``.
     
     INPUT:
 
     - ``n2`` -- an integer which must be an odd square
 
     EXAMPLES::
+    
+        sage: HughesPlane(9)
+        Incidence structure with 91 points and 91 blocks
+        sage: HughesPlane(9).is_projective_plane()
+        True
 
+        sage: HughesPlane(5)
+        Traceback (most recent call last):
+        ...
+        EmptySetError: No Hughes plane of non-square order exists.
 
+        sage: HughesPlane(16)
+        Traceback (most recent call last):
+        ...
+        EmptySetError: No Hughes plane of even order exists.
 
     """
-    
     if not n2.is_square():
         raise EmptySetError("No Hughes plane of non-square order exists.")
     if n2%2 == 0:
@@ -81,14 +179,10 @@ def HughesPlane(n2):
             l=[]
             l.append(vector((-a,K(1),K(0))))
             for x in v:
-                if (~a*(-x-K(1))).is_square():
-                    l.append(vector((x,~a*(-x-K(1)),K(1))))
+                if ((~a)*(-x-K(1))).is_square():
+                    l.append(vector((x,(~a)*(-x-K(1)),K(1))))
                 else:
-                    l.append(vector((x,~a **n * (-x-K(1)),K(1))))
-           # l = []
-           # for p in points:
-           #     if p[0] + op(a,p[1],n) + p[2] == 0:
-           #         l.append(vector(p))
+                    l.append(vector((x,(~a) **n * (-x-K(1)),K(1))))
 # We can now deduce the other lines from these ones
             blcks.append(l)
             for i in range(n2 + n):
@@ -96,17 +190,5 @@ def HughesPlane(n2):
                 blcks.append(l)
     for b in blcks:
         for p in range(len(b)):
-            b[p]=relabel[tuple(normalise(b[p],K,n))]
+            b[p]=relabel[tuple(normalize(b[p],K,n))]
     return IncidenceStructure(n2**2+n2+1, blcks, name="Hughes projective plane of order %d"%n2)
-
-
-def classify(MH,n2):
-    S=([])
-    for i in range(10):
-        c=HughesPlane(MH[i],n2).canonical_label()
-        if c not in S:
-            S.append(c)
-    return S
-    
-#P.relabel(P.canonical_label())
-#récupérer les matrices qui sont isomorphes
