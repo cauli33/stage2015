@@ -1,5 +1,47 @@
 from sage.categories.sets_cat import EmptySetError
 
+def random_q3_minus_one_matrix(K):
+    r"""
+    Return a companion matrix in `GL(3, K)` whose multiplicative order is `q^3 - 1`.
+
+    EXAMPLES::
+
+        sage: m = random_q3_minus_one_matrix(GF(3))
+        sage: m.multiplicative_order() == 3**3 - 1
+        True
+
+        sage: m = random_q3_minus_one_matrix(GF(4,'a'))
+        sage: m.multiplicative_order() == 4**3 - 1
+        True
+
+        sage: m = random_q3_minus_one_matrix(GF(5))
+        sage: m.multiplicative_order() == 5**3 - 1
+        True
+
+        sage: m = random_q3_minus_one_matrix(GF(9,'a'))
+        sage: m.multiplicative_order() == 9**3 - 1
+        True
+    """
+    q = K.cardinality()
+    M = MatrixSpace(K, 3)
+
+    if q.is_prime():
+        from sage.rings.finite_rings.conway_polynomials import conway_polynomial
+        try:
+            a,b,c,_ = conway_polynomial(q, 3)
+        except RuntimeError:  # the polynomial is not in the database
+            pass
+        else:
+            return M([0,0,-a,1,0,-b,0,1,-c])
+
+    while True:
+        a = K._random_nonzero_element()
+        b = K.random_element()
+        c = K.random_element()
+        m = M([0,0,-a,1,0,-b,0,1,-c])
+        if m.multiplicative_order() == q**3 - 1:
+            return m
+
 def find_hughes_matrix(q):
     M = GL(3,GF(q))
     for m in M:
