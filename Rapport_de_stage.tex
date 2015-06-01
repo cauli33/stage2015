@@ -7,14 +7,22 @@
 \usepackage{eufrak}
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{verbatim}
+\usepackage{sagetex}
+%\provideenvironment{sageexample}{}{}
+% \renewenvironment{sageexample}
+% {\sageverbatim}%
+% {\endsageverbatim}
+
 
 \newtheorem{Rem}{Remarque}[subsection]
 \newtheorem{Ex}{Exemple}[subsection]
 \newtheorem{Def}{Définition}
 \newtheorem{Prop}{Proposition}
 \newtheorem{Th}{Théorème}
-
+\lstset{language=Python}
 \begin{document}
+
 \author{Quentin Honoré}
 \date{}
 \maketitle
@@ -31,7 +39,8 @@ $\cdot$ Deux droites distinctes se coupent en un unique point. \\
 $\cdot$ Il existe un quadrilatère (4 points tels que pour chaque triplet, les 3 points ne sont pas alignés).
 
 \begin{Rem}
-$\cdot$ Les 2 premières propositions sont symétriques. \\ 
+  $\cdot$ Les 2 premières propositions sont symétriques. \\
+  $\cdot$ Un plan projectif est une structure d'incidence (un ensemble de points et un ensemble de droites).
 \end{Rem}
   
 \begin{Ex}
@@ -56,7 +65,10 @@ $card(D)=card(P)=k^2+k+1$
 \end{center}
 \end{Prop}
 En effet, si on considère un point P, k+1 droites passent par ce point. Sur chacune de ces droites, il y a k+1 points, donc k si on ne compte pas le point P. On a donc k(k+1) points en plus du point P, soit:	$card(P)=k(k+1)+1=k^2+k+1$
-
+\begin{sageverbatim}
+  sage: 3+3
+  6
+\end{sageverbatim}
 \begin{Rem}
 On ne peut pas avoir de plan projectif de cardinal 6,8,9,10,11,12,14...: \\
 $2^2+2+1=7$ \\
@@ -73,6 +85,32 @@ $3^2+3+1=13$
   Un \textit{blocking set} de plus petite cardinalité est appelé \textit{committee}.\\
   Les \textit{committee} sont des \textit{minimal blocking set}.
 \end{Def}
+\subsection{Les corps finis}
+
+
+\newpage
+
+\section{Le logiciel Sage}
+\subsection{Présentation}
+\textit{SageMath} est un logiciel libre de mathématiques qui se veut être une alternative libre à Matlab, Maple...
+\begin{center}
+\includegraphics[scale=0.5 ]{sage.png}
+\end{center}
+Il est basé sur le langage Python et combine plusieurs dizaines de programmes libres dans une interface commune.\\
+SageMath permet de travailler sur une vaste gamme de Mathématiques. Au cours de ce stage je ne travaille que dans la partie combinatoire de Sage et plus précisemment dans les designs combinatoires.
+\vspace{4\baselineskip}
+\begin{center}
+  \includegraphics[scale=0.6]{matieres.jpg}
+\end{center}
+\vspace{4\baselineskip}
+Sage étant un logiciel libre, le code source est entièrement accessible et modifiable. Il est en constante évolution, plusieurs mises à jours stables sortent par année. Le développement de Sage (les implémentations de nouvelles fonctions, de nouvelles classes, les corrections de bugs) se fait par tou-te-s les utilisat-rice-teurs qui proposent via le Trac de Sage (application web Open Source de gestion de projets) leur apport qui est ensuite discuté et éventuellement validé.
+
+
+
+
+
+
+
 
 \newpage
 \subsection{La programmation linéaire}
@@ -80,23 +118,75 @@ $3^2+3+1=13$
   Un programme linéaire est un système d’équations linéaires dont on cherche une solution optimale. Résoudre un programme linéaire revient à trouver la valeur des variables qui maximise (ou minimise) une fonction objectif, tout en satisfaisant un système de contraintes.
 \end{Def}
 
+\begin{Ex}
+  On cherche à maximiser $x + y + 3z$ tel que : \\
+  $x + 2y \leq 4$\\
+  $5z - y \leq 8$\\
+  La solution ici est $x = 4, y = 0, z = 1.6$
+\end{Ex}
+
+\subsubsection{Dans Sage}
+Nous avons dans Sage la classe $MixedIntegerLinearProgram$ qui représente les programmes linéaires que nous avons vu.
+Nous allons résoudre le problème précédent avec Sage:
 \begin{lstlisting}
-#from sage.numerical.mip import MIPSolverException
-#from sage.categories.sets_cat import EmptySetError
+sage: p = MixedIntegerLinearProgram()
+sage: x, y, z = p['x'], p['y'], p['z']      # on definit les variables
+\end{lstlisting}
+
+
+
+
+
+
+
+
+
+La programmation linéaire va nous être utile pour trouver les arcs et les blocking set dans les plans projectifs finis. En effet, en associant une valeur binaire à chaque point du plan : 1 si on prend le point dans l'ensemble recherché, 0 sinon.\\
+A partir de cet énoncé, on peut faire un programme pour trouver un arc de cardinalité maximale ou un \textit{committee} (un \textit{blocking set} de cardinalité minimale).
+
+Soit s une structure d'incidence :
+
+\begin{lstlisting}
+from sage.numerical.mip import MIPSolverException
+from sage.categories.sets_cat import EmptySetError
           
 def arc(s):   
     p=MixedIntegerLinearProgram()
     b=p.new_variable(binary=True)
+% La variable b comme une variable binaire
     p.set_objective(p.sum(b[v] for v in s._points))
+% Notre objectif est le nombre de points dans notre arc
     for i in s._blocks:
         p.add_constraint(p.sum(b[k] for k in i)<=2)
+% On ne doit avoir au maximum que deux points d'un arc sur une ligne 
     try:
         p.solve()
         r=p.get_values(b)
         return [i for (i,j) in r.items() if j==1]
     except MIPSolverException:
-    raise EmptySetError('There is  no arc in this incidence structure.')
+        raise EmptySetError('There is  no arc in this incidence structure.')
 \end{lstlisting}
+\newpage
+\begin{lstlisting}
+def blocking_set(s):
+    p=MixedIntegerLinearProgram(maximization=False)
+% On minimise plutot que maximise
+    b=p.new_variable(binary=True)
+    p.set_objective(p.sum(b[v] for v in s._points))
+    for i in s._blocks:
+        p.add_constraint(p.sum(b[k] for k in i)>=1)
+% Chaque ligne doit etre intersectee
+        p.add_constraint(p.sum(b[k] for k in i)<=len(i)-1)
+% Aucune ligne ne doit etre contenue entiere
+    try:
+        p.solve()
+        r=p.get_values(b)
+        return [i for (i,j) in r.items() if j==1]
+    except MIPSolverException :
+        raise EmptySetError('There is no blocking set in this
+    incidence structure')  
+\end{lstlisting}
+
 
 \subsection{Plan Desarguesien}
 
@@ -109,12 +199,10 @@ def arc(s):
 \includegraphics[scale=0.5]{desargues.png}  
 \end{center}
 
-\lstset{language=Python}
+
 
 \begin{lstlisting}
  def desarguasian_plane(P):
-    F=0
-    T=0
     blocks = P._blocks
     k = len(blocks[0])-1
     inter_matrix = matrix(ZZ,k**2 + k + 1)
