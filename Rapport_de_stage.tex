@@ -81,8 +81,8 @@ $3^2+3+1=13$
 \end{Def}
 
 \begin{lstlisting}
-from sage.numerical.mip import MIPSolverException
-from sage.categories.sets_cat import EmptySetError
+#from sage.numerical.mip import MIPSolverException
+#from sage.categories.sets_cat import EmptySetError
           
 def arc(s):   
     p=MixedIntegerLinearProgram()
@@ -96,9 +96,9 @@ def arc(s):
         return [i for (i,j) in r.items() if j==1]
     except MIPSolverException:
     raise EmptySetError('There is  no arc in this incidence structure.')
-\end {lstlisting}
+\end{lstlisting}
 
-\subsection{Plan Desargu\'esien}
+\subsection{Plan Desarguesien}
 
 \begin{Th}{Th\'eor\`eme de Desargues}\\
   Soit deux triangles (non plats) ABC et A'B'C' de sommets deux à deux distincts (A de A', B de B' et C de C'). \\
