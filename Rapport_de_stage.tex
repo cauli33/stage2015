@@ -9,18 +9,17 @@
 \usepackage{listings}
 \usepackage{verbatim}
 \usepackage{sagetex}
-%\provideenvironment{sageexample}{}{}
-% \renewenvironment{sageexample}
-% {\sageverbatim}%
-% {\endsageverbatim}
-
+\usepackage{array,multirow,makecell}
+\usepackage{amssymb}
 
 \newtheorem{Rem}{Remarque}[subsection]
 \newtheorem{Ex}{Exemple}[subsection]
-\newtheorem{Def}{Définition}
-\newtheorem{Prop}{Proposition}
-\newtheorem{Th}{Théorème}
+\newtheorem{Def}{Définition}[section]
+\newtheorem{Prop}[Def]{Proposition}
+\newtheorem{Th}[Def]{Théorème}
 \lstset{language=Python}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
 \begin{document}
 
 \author{Quentin Honoré}
@@ -32,8 +31,8 @@
 
 \section{Les plans projectifs finis}
 \subsection{Définition}
-Soit P l'ensemble fini des points et D $ \subseteq \mathfrak{P} $ l'ensemble des droites.
-(P,D) est un plan projectif fini si et seulement si: \\
+Soit P un ensemble fini (appelé points) et D un sous ensemble des parties de P (appelé droites). \\
+On dit que le couple (P,D) est un plan projectif fini si et seulement si: \\
 $\cdot$ Par deux points distincts passe une unique droite. \\
 $\cdot$ Deux droites distinctes se coupent en un unique point. \\
 $\cdot$ Il existe un quadrilatère (4 points tels que pour chaque triplet, les 3 points ne sont pas alignés).
@@ -44,16 +43,21 @@ $\cdot$ Il existe un quadrilatère (4 points tels que pour chaque triplet, les 3
 \end{Rem}
   
 \begin{Ex}
-  On va construire un plan projectif fini d'ordre 3 (3 points par droite, et 3 droites se coupent en chaque point). On construit d'abord un quadrilatère. Puis on construit les intersections entre les 2 droites horizontales, les 2 droites verticales et les diagonales. Ces intersections sont les intersections "à l'infini".
+  On va construire un plan projectif fini d'ordre 2 (3 points par droite, et 3 droites se coupent en chaque point). On construit d'abord un quadrilatère. Dans cette géométrie, deux droites qui n'ont pas de points en commun sont dites parallèles. Les diagonales, les deux droites horizontales et les deux verticales \vspace{1\baselineskip}sont donc parallèles.\\
+  Pourtant il nous faut bien une intersection pour tout couple de droites. On définit alors les intersections dites ``à l'infini'', c'est l'idée de base de la géométrie projective. De la même manière que pour le point de fuite chez les peintres, on dit que deux droites parallèles s'intersectent à l'infini. Imaginez vous sur une route, les deux bordures sont bien parallèles mais en regardant au loin, nous avons l'impression que la route se rétrécit pour ne devenir\vspace{1\baselineskip} qu'un point.\\
+La première propriété nous dit maintenant que pour chaque couple de points, on a une unique droite. Nous allons donc construire la ``droite à l'infini'' qui passe par les points à l'infini (comme l'horizon dans la vie courante).
 \begin{center}
-\includegraphics{test_tikz.pdf}
+\includegraphics[scale=1.5]{test_tikz.pdf}
 \end{center}
+\vspace{2\baselineskip}
 Les 3 propositions sont bien vérifiées.
 \end{Ex}
-
+\newpage
 \begin{Ex}
-Le jeu du Dobble est un bon exemple de plan projectif fini. Si vous ne le connaissez pas, le Dobble est un jeu composé de 57 cartes sur lesquelles sont dessinés 8 objets différents. Ces cartes sont construites de telle manière que pour toute paire de carte, il y ait un et un seul objet en commun. \\
-On peut alors facilement voir l'analogie avec les plans projectifs finis. Considérons que les cartes sont les droites et les objets les points. Deux droites distinctes se coupent en un unique point (ie. pour deux cartes, il y a un unique objet en commun). On pourra alors vérifier que si l'on choisit deux objets différents, une seule carte contient ces deux symboles. Et enfin, on peut choisir 4 objets, tels qu'on ne peut pas trouver 3 d'entres eux sur la même carte.
+  Le jeu du Dobble est un bon exemple de plan projectif fini. Si vous ne le connaissez pas, le Dobble est un jeu composé de 55 cartes sur lesquelles sont dessinés 8 objets\vspace{1\baselineskip} différents.\\
+  A chaque tour, pour gagner, il faut reconnaître le plus rapidement quel est le symbole commun entre sa propre carte et celle au milieu. Le jeu ne serait alors pas juste si l'un-e des joueu-r-ses avait deux symboles en commun avec la carte du milieu tandis que l'autre n'en\vspace{1\baselineskip} a aucun. \\
+ Ces cartes sont donc construites de telle manière que pour toute paire de carte, il y ait un et un seul objet en commun. On vérifie donc bien que si les cartes sont les droites et les symboles les points, alors pour deux droites distinctes, il y a un unique point d'intersection(ie. pour deux cartes, il y a un unique objet en comm\vspace{1\baselineskip}un).\\
+ 
 \begin{center}
 \includegraphics[scale=0.3]{dobble-2.jpg}
 \end{center}
@@ -64,15 +68,21 @@ Toutes les droites contiennent le même nombre de points. Par symétrie, par tou
 $card(D)=card(P)=k^2+k+1$
 \end{center}
 \end{Prop}
-En effet, si on considère un point P, k+1 droites passent par ce point. Sur chacune de ces droites, il y a k+1 points, donc k si on ne compte pas le point P. On a donc k(k+1) points en plus du point P, soit:	$card(P)=k(k+1)+1=k^2+k+1$
-\begin{sageverbatim}
-  sage: 3+3
-  6
-\end{sageverbatim}
+
+\vspace{2\baselineskip}
+
+En effet, si on considère un point P, k+1 droites passent par ce point. Sur chacune de ces droites, il y a k+1 points, donc k si on ne compte pas le point P. On a donc k(k+1) points en plus du point P, soit:
+\begin{center}
+$card(P)=k(k+1)+1=k^2+k+1$
+\end{center}
+
 \begin{Rem}
-On ne peut pas avoir de plan projectif de cardinal 6,8,9,10,11,12,14...: \\
+$\cdot$On ne peut pas avoir de plan projectif de cardinal 6,8,9,10,11,12,14...: \\
 $2^2+2+1=7$ \\
-$3^2+3+1=13$
+  $3^2+3+1=13$\\
+  \newpage
+  
+$\cdot$Le jeu du Dobble contient 55 cartes, on pourtant on a 8 symboles : si c'est un plan projectif, il est d'ordre 7. Or $7^2+7+1=57$, il manque donc bien 2 cartes au Dobble. Si on étudie les cartes, on voit bien que le bonhomme de neige n'apparait que sur 6 cartes et quelques autres symboles sur 7 cartes. On arrive au même jeu si l'on construit nous même un plan projectif d'ordre 7 et qu'on retire 2 droites passant par un même point à la fin. En ajoutant ces deux cartes manquantes, le jeu du Dobble vérifie toutes les propriétés des plans projectifs. Néanmoins, il y a toujours un unique symbole pour deux cartes même en enlevant 2 cartes.
 \end{Rem}
 
 \begin{Def}{Arc} \\
@@ -80,126 +90,114 @@ $3^2+3+1=13$
 \end{Def}
 
 \begin{Def}{Blocking set}\\
-  Un \textit{blocking set} est un ensemble de points dans un plan projectif que chaque ligne intersecte mais qui ne contient pas une ligne entière.\\
-  Un \textit{blocking set} B est minimal si par chaque point P de B, une seule ligne intersecte B en P.\\
-  Un \textit{blocking set} de plus petite cardinalité est appelé \textit{committee}.\\
-  Les \textit{committee} sont des \textit{minimal blocking set}.
+ $\cdot$ Un \textit{blocking set} est un ensemble de points dans un plan projectif que chaque ligne intersecte mais qui ne contient pas une ligne entière.\\
+  $\cdot$ Un \textit{blocking set} B est minimal si par chaque point P de B, une seule ligne intersecte B en P.\\
+  $\cdot$ Un \textit{blocking set} de plus petite cardinalité est appelé \textit{committee}.\\
+ $\cdot$  Les \textit{committee} sont des \textit{minimal blocking set}.
 \end{Def}
 \subsection{Les corps finis}
-
-
-\newpage
-
-\section{Le logiciel Sage}
-\subsection{Présentation}
-\textit{SageMath} est un logiciel libre de mathématiques qui se veut être une alternative libre à Matlab, Maple...
-\begin{center}
-\includegraphics[scale=0.5 ]{sage.png}
-\end{center}
-Il est basé sur le langage Python et combine plusieurs dizaines de programmes libres dans une interface commune.\\
-SageMath permet de travailler sur une vaste gamme de Mathématiques. Au cours de ce stage je ne travaille que dans la partie combinatoire de Sage et plus précisemment dans les designs combinatoires.
-\vspace{4\baselineskip}
-\begin{center}
-  \includegraphics[scale=0.6]{matieres.jpg}
-\end{center}
-\vspace{4\baselineskip}
-Sage étant un logiciel libre, le code source est entièrement accessible et modifiable. Il est en constante évolution, plusieurs mises à jours stables sortent par année. Le développement de Sage (les implémentations de nouvelles fonctions, de nouvelles classes, les corrections de bugs) se fait par tou-te-s les utilisat-rice-teurs qui proposent via le Trac de Sage (application web Open Source de gestion de projets) leur apport qui est ensuite discuté et éventuellement validé.
-
-
-
-
-
-
-
-
-\newpage
-\subsection{La programmation linéaire}
 \begin{Def}
-  Un programme linéaire est un système d’équations linéaires dont on cherche une solution optimale. Résoudre un programme linéaire revient à trouver la valeur des variables qui maximise (ou minimise) une fonction objectif, tout en satisfaisant un système de contraintes.
+  Un corps fini est un corps commutatif qui est en plus fini.\\
+  Pour simplifier, un corps commutatif est une structure dans laquelle il est possible d'effectuer des additions, des multiplications, des soustractions et des divisions.\\
+  Un corps fini est uniquement défini par son cardinal qui doit être la puissance d'un nombre premier. On le note $\mathbb{F}_n$.
 \end{Def}
-
-\begin{Ex}
-  On cherche à maximiser $x + y + 3z$ tel que : \\
-  $x + 2y \leq 4$\\
-  $5z - y \leq 8$\\
-  La solution ici est $x = 4, y = 0, z = 1.6$
-\end{Ex}
-
-\subsubsection{Dans Sage}
-Nous avons dans Sage la classe $MixedIntegerLinearProgram$ qui représente les programmes linéaires que nous avons vu.
-Nous allons résoudre le problème précédent avec Sage:
-\begin{lstlisting}
-sage: p = MixedIntegerLinearProgram()
-sage: x, y, z = p['x'], p['y'], p['z']      # on definit les variables
-\end{lstlisting}
-
-
-
-
-
-
-
-
-
-La programmation linéaire va nous être utile pour trouver les arcs et les blocking set dans les plans projectifs finis. En effet, en associant une valeur binaire à chaque point du plan : 1 si on prend le point dans l'ensemble recherché, 0 sinon.\\
-A partir de cet énoncé, on peut faire un programme pour trouver un arc de cardinalité maximale ou un \textit{committee} (un \textit{blocking set} de cardinalité minimale).
-
-Soit s une structure d'incidence :
-
-\begin{lstlisting}
-from sage.numerical.mip import MIPSolverException
-from sage.categories.sets_cat import EmptySetError
-          
-def arc(s):   
-    p=MixedIntegerLinearProgram()
-    b=p.new_variable(binary=True)
-% La variable b comme une variable binaire
-    p.set_objective(p.sum(b[v] for v in s._points))
-% Notre objectif est le nombre de points dans notre arc
-    for i in s._blocks:
-        p.add_constraint(p.sum(b[k] for k in i)<=2)
-% On ne doit avoir au maximum que deux points d'un arc sur une ligne 
-    try:
-        p.solve()
-        r=p.get_values(b)
-        return [i for (i,j) in r.items() if j==1]
-    except MIPSolverException:
-        raise EmptySetError('There is  no arc in this incidence structure.')
-\end{lstlisting}
+\begin{center}
+$\mathbb{F}_2 (\mathbb{Z}/2\mathbb{Z})$\\
+\begin{tabular}{|c|c|c|}
+  \hline
+  + & \textbf{0} & \textbf{1} \\
+  \hline
+  \textbf{0}0 & 0 & 1 \\
+  \hline
+  \textbf{1} & 1 & 0 \\
+  \hline
+\end{tabular}
+\begin{tabular}{|c|c|c|}
+  \hline
+  $*$ & \textbf{0} & \textbf{1} \\
+  \hline
+  \textbf{0} & 0 & 0\\
+  \hline
+  \textbf{1} & 0 & 1\\
+  \hline
+\end{tabular}\\
+\vspace{2\baselineskip}
+$\mathbb{F}_3 (\mathbb{Z}/3\mathbb{Z})$\\
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  + & \textbf{0} & \textbf{1} & \textbf{2} \\
+  \hline
+  \textbf{0} & 0 & 1 & 2 \\
+  \hline
+  \textbf{1} & 1 & 2 & 0 \\
+  \hline
+  \textbf{2} & 2 & 0 & 1 \\
+  \hline
+\end{tabular}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  $*$ & \textbf{0} & \textbf{1} & \textbf{2} \\
+  \hline
+  \textbf{0} & 0 & 0 & 0 \\
+  \hline
+  \textbf{1} & 0 & 1 & 2 \\
+  \hline
+  \textbf{2} & 0 & 2 & 1 \\
+  \hline
+\end{tabular}\\
+\vspace{2\baselineskip}
+$\mathbb{F}_4 (4=2^2)$\\
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+  + & \textbf{0} & \textbf{1} & \textbf{x} & \textbf{x+1} \\
+  \hline
+  \textbf{0} & 0 & 1 & x & x+1 \\
+  \hline
+  \textbf{1} & 1 & 0 & x+1 & x \\
+  \hline
+  \textbf{x} & x & x+1 & 0 & 1 \\
+  \hline
+  \textbf{x+1} & x+1 & x & 1 & 0 \\
+  \hline
+\end{tabular}
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+  $*$ & \textbf{0} & \textbf{1} & \textbf{x} & \textbf{x+1} \\
+  \hline
+  \textbf{0} & 0 & 0 & 0 & 0 \\
+  \hline
+  \textbf{1} & 0 & 1 & x & x+1 \\
+  \hline
+  \textbf{x} & 0 & x & x+1 & 1 \\
+  \hline
+  \textbf{x+1} & 0 & x+1 & 1 & x\\
+  \hline
+\end{tabular}
+\end{center}
 \newpage
-\begin{lstlisting}
-def blocking_set(s):
-    p=MixedIntegerLinearProgram(maximization=False)
-% On minimise plutot que maximise
-    b=p.new_variable(binary=True)
-    p.set_objective(p.sum(b[v] for v in s._points))
-    for i in s._blocks:
-        p.add_constraint(p.sum(b[k] for k in i)>=1)
-% Chaque ligne doit etre intersectee
-        p.add_constraint(p.sum(b[k] for k in i)<=len(i)-1)
-% Aucune ligne ne doit etre contenue entiere
-    try:
-        p.solve()
-        r=p.get_values(b)
-        return [i for (i,j) in r.items() if j==1]
-    except MIPSolverException :
-        raise EmptySetError('There is no blocking set in this
-    incidence structure')  
-\end{lstlisting}
-
-
+On peut construire des plans projectifs à partir de ces corps.
+\subsubsection*{Construction}
+Pour construire un plan projectif à partir du corps $GF(q)$,\\
+Nous allons donner aux points des coordonnées $(x,y,z)$ avec $x,y,z \in GF(q) et (x,y,z) \neq (0,0,0)$. Les points sont définis à multiplication près : pour $k \neq 0, k(x,y,z) = (kx,ky,kz) = (x,y,z)$.\\
+Ici aussi, les droites ont une équation de la forme $ax + by + cz = 0$ avec $(a,b,c) \neq (0,0,0)$.
 \subsection{Plan Desarguesien}
 
 \begin{Th}{Th\'eor\`eme de Desargues}\\
   Soit deux triangles (non plats) ABC et A'B'C' de sommets deux à deux distincts (A de A', B de B' et C de C'). \\
-  Les 3 droites (AA'), (BB') et (CC') sont concourantes (en un point S) si et seulement si les 3 points $P = (BC) \cap (B'C')$, $Q = (AC) \cap (A'C')$ et $R = (AB) \cap (A'B')$ sont alignés (sur une droite d)
+  Les 3 droites (AA'), (BB') et (CC') sont concourantes (en un point S) \textbf{si et seulement si} les 3 points $P = (BC) \cap (B'C')$, $Q = (AC) \cap (A'C')$ et $R = (AB) \cap (A'B')$ sont alignés (sur une droite d)
   \end{Th}
 
 \begin{center}
 \includegraphics[scale=0.5]{desargues.png}  
 \end{center}
 
+\subsubsection{Plan de Hughes}
+Jusqu'ici, tous les plans projectifs que nous avons vus étaient des plans desarguesiens : le théorème de Desargues est vérifié sur ces plans.\\
+Cependant, sur certains plans projectifs, le théorème de Desargues, c'est le cas des plans de Hughes.
 
+\subsubsection*{Construction des plans de Hughes}
+Soit q un nombre premier impair (i.e. différent de 2).\\
+On définit N comme ayant les mêmes éléments et la même addition que $GF(q^2)$
 
 \begin{lstlisting}
  def desarguasian_plane(P):
@@ -208,7 +206,7 @@ def blocking_set(s):
     inter_matrix = matrix(ZZ,k**2 + k + 1)
     line_matrix = matrix(ZZ, k**2 + k + 1)
     for n,b in enumerate(blocks):
-        for i in b:
+        for i in b:   
             for j in b:
                 line_matrix[i,j] = n
         for m,c in enumerate(blocks):
@@ -245,4 +243,129 @@ def blocking_set(s):
                 print (A,B,C)
                 print 'aligned {}, concurrent{}'.format(aligned,concurrent)
 \end{lstlisting}
+
+
+\newpage
+
+\section{Le logiciel Sage}
+\subsection{Présentation}
+\textit{SageMath} est un logiciel libre de mathématiques qui se veut être une alternative libre à Matlab, Maple...
+\vspace{3\baselineskip}
+\begin{center}
+\includegraphics[scale=0.5 ]{sage.png}
+\end{center}
+\vspace{3\baselineskip}
+Il est basé sur le langage Python et combine plusieurs dizaines de programmes libres dans une interface commune.\\
+SageMath permet de travailler sur une vaste gamme de Mathématiques. Au cours de ce stage je ne travaille que dans la partie combinatoire de Sage et plus précisemment dans les designs combinatoires.
+\vspace{3\baselineskip}
+\begin{center}
+  \includegraphics[scale=0.6]{matieres.jpg}
+\end{center}
+\vspace{3\baselineskip}
+Sage étant un logiciel libre, le code source est entièrement accessible et modifiable. Il est en constante évolution, plusieurs mises à jours stables sortent par année. Le développement de Sage (les implémentations de nouvelles fonctions, de nouvelles classes, les corrections de bugs) se fait par tou-te-s les utilisat-rice-teurs qui proposent via le Trac de Sage (application web Open Source de gestion de projets) leur apport qui est ensuite discuté et éventuellement validé.
+
+
+
+
+
+
+
+
+\newpage
+\subsection{La programmation linéaire}
+  Un programme linéaire est un système d’équations linéaires dont on cherche une solution optimale. Résoudre un programme linéaire revient à trouver la valeur des variables qui maximise (ou minimise) une fonction objectif, tout en satisfaisant un système de contraintes.
+\vspace{1\baselineskip}
+\begin{Ex}
+  On cherche à maximiser $x + y + 3z$ tel que : \\
+  $x + 2y \leq 4$\\
+  $5z - y \leq 8$\\
+  La solution ici est $x = 4, y = 0, z = 1.6$
+\end{Ex}
+\vspace{1\baselineskip}
+La programmation linéaire lorsqu'on l'utilise est pour nous une boite noire. Le fonctionnement de cette boite est compliqué et bien optimisé. Il nous évite la programmation de grandes boucles très couteuses et bien trop longues dès que l'on a suffisamment de variables. Ces boucles testeraient alors toutes les combinaisons pour chercher celle qui maximise la fonction objectif (et encore, cette méthode n'est pas vraiment possible sur les réels ou les entiers).\\
+C'est un outil très utile pour les problèmes combinatoires.
+\vspace{1\baselineskip}
+\begin{Ex}
+  Pour comprendre les problèmes que l'on va chercher à résoudre, nous allons prendre un exemple plus concret:\vspace{1\baselineskip} \\
+  On a devant nous notre sac à dos ayant une capacité limitée C que nous devons remplir avec des objets à notre disposition ayant chacun une utilité et un poids propres fixés entre 0 et 1. Par exemple, une gourde aura un poids de 0.39 pour une utilité de 0.85 tandis qu'un livre aura un poids de 0.35 pour une utilité de 0.26 (selon le livre).\vspace{1\baselineskip}\\
+  Soit o un objet. On va introduire une variable binaire ``prendre'' telle que $prendre[o]=1$ si on prend o et 0 si on ne le prend pas. \\
+  Notre objectif est d'avoir un sac rempli des objets les plus utiles, on veut donc maximiser:
+  \begin{center}
+    $\sum_o utilit\acute{e}[o] * prendre[o]$
+  \end{center}
+  Cependant notre sac ayant une capacité limitée, il faut bien ajouter une contrainte sur le poids:
+  \begin{center}
+    $\sum_o poids[o] * prendre[o] \leq C$
+  \end{center}
+  Grâce à la programmation linéaire, on pourra donc savoir quelle combinaison d'objets pouvant rentrer dans notre sac est la plus utile.
+  \end{Ex}
+\newpage
+\subsubsection{Dans Sage}
+Nous avons dans Sage la classe $MixedIntegerLinearProgram$ qui représente les programmes linéaires que nous avons vu.
+Nous allons résoudre le premier exemple avec Sage:
+\begin{sageverbatim}
+sage: p = MixedIntegerLinearProgram()
+sage: x, y, z = p['x'], p['y'], p['z']    # on definit les variables
+sage: p.set_objective( x + y + 3*z )
+sage: p.add_constraint( x + 2*y <= 4 )
+sage: p.add_constraint ( 5*z - y <= 8 )
+sage: p.solve()         # sage nous retourne la valeur maximale de l'objectif
+8.8
+sage: p.get_values(x,y,z)    # on peut demander les valeurs des variables
+[4.0, 0.0, 1.6]
+\end{sageverbatim}
+
+La programmation linéaire va nous être utile pour trouver les arcs et les blocking set dans les plans projectifs finis. En effet, en associant une valeur binaire à chaque point du plan : 1 si on prend le point dans l'ensemble recherché, 0 sinon.\\
+A partir de cet énoncé, on peut faire un programme pour trouver un arc de cardinalité maximale ou un \textit{committee} (un \textit{blocking set} de cardinalité minimale).
+
+Soit s une structure d'incidence :
+
+\begin{lstlisting}
+from sage.numerical.mip import MIPSolverException
+from sage.categories.sets_cat import EmptySetError
+          
+def arc(s):   
+    p=MixedIntegerLinearProgram()
+    b=p.new_variable(binary=True)
+# La variable b comme une variable binaire #
+
+    p.set_objective(p.sum(b[v] for v in s._points))
+# Notre objectif est le nombre de points dans notre arc #
+
+    for i in s._blocks:
+        p.add_constraint(p.sum(b[k] for k in i)<=2)
+# On ne doit avoir au maximum que deux points d'un arc sur une ligne #
+        
+    try:
+        p.solve()
+        r=p.get_values(b)
+        return [i for (i,j) in r.items() if j==1]
+    except MIPSolverException:
+        raise EmptySetError('There is  no arc in this incidence structure.')
+\end{lstlisting}
+\newpage
+\begin{lstlisting}
+def blocking_set(s):
+    p=MixedIntegerLinearProgram(maximization=False)
+# On minimise plutot que maximise #
+
+    b=p.new_variable(binary=True)
+    p.set_objective(p.sum(b[v] for v in s._points))
+    for i in s._blocks:
+        p.add_constraint(p.sum(b[k] for k in i)>=1)
+# Chaque ligne doit etre intersectee #
+
+        p.add_constraint(p.sum(b[k] for k in i)<=len(i)-1)
+# Aucune ligne ne doit etre contenue entiere #
+        
+    try:
+        p.solve()
+        r=p.get_values(b)
+        return [i for (i,j) in r.items() if j==1]
+    except MIPSolverException :
+        raise EmptySetError('There is no blocking set in this
+    incidence structure')  
+\end{lstlisting}
+
+
 \end{document}
