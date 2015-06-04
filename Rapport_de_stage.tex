@@ -28,7 +28,12 @@
 \newpage
 \tableofcontents
 \newpage
-
+\section*{Remerciements}
+\newpage
+\section*{Introduction}
+\newpage
+\section{Présentation du LaBRI}
+\newpage
 \section{Les plans projectifs finis}
 \subsection{Définition}
 Soit P un ensemble fini (appelé points) et D un sous ensemble des parties de P (appelé droites). \\
@@ -98,16 +103,33 @@ $\cdot$Le jeu du Dobble contient 55 cartes, on pourtant on a 8 symboles : si c'e
 \subsection{Les corps finis}
 \begin{Def}
   Un corps fini est un corps commutatif qui est en plus fini.\\
-  Pour simplifier, un corps commutatif est une structure dans laquelle il est possible d'effectuer des additions, des multiplications, des soustractions et des divisions.\\
-  Un corps fini est uniquement défini par son cardinal qui doit être la puissance d'un nombre premier. On le note $\mathbb{F}_n$.
-\end{Def}
+  \begin{itemize}
+\item il y a un élément neutre pour l'addition (noté $0$).
+\item il y a un élément neutre pour la multiplication (noté $1$).
+\item tous les éléments admettent un inverse pour l'addition.
+\item tous les éléments différents de 0 ont un inverse pour la multiplication.
+\item et certaines propriétés de commutativité, associativité qu'il n'est pas nécessaire de détailler ici.
+  \end{itemize}
+  \end{Def}
+Un corps fini est uniquement défini par son cardinal qui doit être la puissance d'un nombre premier. On le note $\mathbb{F}_n$.
+  Si n est un nombre premier, alors $\mathbb{F}_n$ est $\mathbb{Z}/n\mathbb{Z}$.\vspace{1\baselineskip}\\
+  Dans ce cas, on utilise la multiplication et l'addition usuelles congrues à $n$. \\Par exemple si on se place dans $\mathbb{F}_3$:\\
+  $2*2=4$ et $4 \equiv 1 [3]$ donc dans $\mathbb{F}_3,2*2=1$\\
+  De la même façon, $1+2=0$ sur $\mathbb{F}_3$.\vspace{1\baselineskip}.\\
+
+  Il faut bien garder en tête que les éléments de ces corps finis n'ont que la notation en commun avec les entiers naturels que nous connaissons. L'élément que nous notons 2 dans $\mathbb{F}_3$ n'est pas l'entier 2.
+
+\begin{Ex}
+  Par exemple, l'ensemble des réels est un corps tandis que l'ensemble des entiers naturels n'en est pas un : 2 n'admet pas d'inverse multiplicatif ni d'inverse additif.
+  \end{Ex}
+  
 \begin{center}
-$\mathbb{F}_2 (\mathbb{Z}/2\mathbb{Z})$\\
+$\mathbb{F}_2 $\\
 \begin{tabular}{|c|c|c|}
   \hline
   + & \textbf{0} & \textbf{1} \\
   \hline
-  \textbf{0}0 & 0 & 1 \\
+  \textbf{0} & 0 & 1 \\
   \hline
   \textbf{1} & 1 & 0 \\
   \hline
@@ -122,7 +144,7 @@ $\mathbb{F}_2 (\mathbb{Z}/2\mathbb{Z})$\\
   \hline
 \end{tabular}\\
 \vspace{2\baselineskip}
-$\mathbb{F}_3 (\mathbb{Z}/3\mathbb{Z})$\\
+$\mathbb{F}_3 $\\
 \begin{tabular}{|c|c|c|c|}
   \hline
   + & \textbf{0} & \textbf{1} & \textbf{2} \\
@@ -146,7 +168,7 @@ $\mathbb{F}_3 (\mathbb{Z}/3\mathbb{Z})$\\
   \hline
 \end{tabular}\\
 \vspace{2\baselineskip}
-$\mathbb{F}_4 (4=2^2)$\\
+$\mathbb{F}_4$\\
 \begin{tabular}{|c|c|c|c|c|}
   \hline
   + & \textbf{0} & \textbf{1} & \textbf{x} & \textbf{x+1} \\
@@ -175,11 +197,12 @@ $\mathbb{F}_4 (4=2^2)$\\
 \end{tabular}
 \end{center}
 \newpage
-On peut construire des plans projectifs à partir de ces corps.
+Les corps finis sont des outils importants pour construire des plans projectifs.
 \subsubsection*{Construction}
 Pour construire un plan projectif à partir du corps $GF(q)$,\\
 Nous allons donner aux points des coordonnées $(x,y,z)$ avec $x,y,z \in GF(q) et (x,y,z) \neq (0,0,0)$. Les points sont définis à multiplication près : pour $k \neq 0, k(x,y,z) = (kx,ky,kz) = (x,y,z)$.\\
-Ici aussi, les droites ont une équation de la forme $ax + by + cz = 0$ avec $(a,b,c) \neq (0,0,0)$.
+Ici aussi, les droites ont une équation de la forme $ax + by + cz = 0$ avec $(a,b,c) \neq (0,0,0)$. Les droites correspondantes seront notées $(a,b,c)$.
+
 \subsection{Plan Desarguesien}
 
 \begin{Th}{Th\'eor\`eme de Desargues}\\
@@ -193,68 +216,17 @@ Ici aussi, les droites ont une équation de la forme $ax + by + cz = 0$ avec $(a
 
 \subsubsection{Plan de Hughes}
 Jusqu'ici, tous les plans projectifs que nous avons vus étaient des plans desarguesiens : le théorème de Desargues est vérifié sur ces plans.\\
-Cependant, sur certains plans projectifs, le théorème de Desargues, c'est le cas des plans de Hughes.
+Cependant, sur certains plans projectifs, le théorème de Desargues, c'est le cas des plans de Hughes.\vspace{2\baselineskip}\\
 
-\subsubsection*{Construction des plans de Hughes}
 Soit q un nombre premier impair (i.e. différent de 2).\\
-On définit N comme ayant les mêmes éléments et la même addition que $GF(q^2)$
-
-\begin{lstlisting}
- def desarguasian_plane(P):
-    blocks = P._blocks
-    k = len(blocks[0])-1
-    inter_matrix = matrix(ZZ,k**2 + k + 1)
-    line_matrix = matrix(ZZ, k**2 + k + 1)
-    for n,b in enumerate(blocks):
-        for i in b:   
-            for j in b:
-                line_matrix[i,j] = n
-        for m,c in enumerate(blocks):
-            inter_matrix[m,n] = set(b).intersection(c).pop()
-    from itertools import product
-    for a1,b1,c1 in product(range(k**2 + k + 1), repeat = 3):
-        if a1==b1 or b1==c1:
-            continue
-        if inter_matrix[a1,c1]==inter_matrix[a1,b1]:
-            continue
-        for a2,b2,c2 in product(range(k**2 + k + 1), repeat = 3):
-            if a2==b2 or b2==c2:
-                continue
-            if inter_matrix[a2,c2]==inter_matrix[a2,b2]:
-                continue
-            A = line_matrix[a1,a2]
-            B = line_matrix[b1,b2]
-            C = line_matrix[c1,c2]
-            concurrent = inter_matrix[A,B] == inter_matrix[B,C]
-            BC1 = line_matrix[b1,c1]
-            BC2 = line_matrix[b2,c2]
-            p = inter_matrix[BC1,BC2]
-            AC1 = line_matrix[a1,c1]
-            AC2 = line_matrix[a2,c2]
-            q = inter_matrix[AC1,AC2]
-            AB1 = line_matrix[b1,a1]
-            AB2 = line_matrix[b2,a2]
-            r = inter_matrix[AB1,AB2]
-            aligned = line_matrix[p,q] == line_matrix[q,r]
-            if aligned != concurrent:
-                print (a1,b1,c1)
-                print (a2,b2,c2)
-                print (p,q,r)
-                print (A,B,C)
-                print 'aligned {}, concurrent{}'.format(aligned,concurrent)
-\end{lstlisting}
-
-
+Le plan de Hughes se base sur le corps fini $\mathbb{F}_{q^2}$ en utilisant toutefois une multiplication définie différemment de la multiplication ordinaire et non-commutative.\\
+On construit q + 1 droites d'équation $x + a \circ y + z = 0$ comme on l'a fait pour la construction des plans projectifs sur des corps finis.
 \newpage
 
 \section{Le logiciel Sage}
 \subsection{Présentation}
-\textit{SageMath} est un logiciel libre de mathématiques qui se veut être une alternative libre à Matlab, Maple...
-\vspace{3\baselineskip}
-\begin{center}
-\includegraphics[scale=0.5 ]{sage.png}
-\end{center}
-\vspace{3\baselineskip}
+\textit{SageMath} est un logiciel libre de mathématiques qui se veut être une alternative libre à Matlab, Maple...\vspace{1\baselineskip}\\
+
 Il est basé sur le langage Python et combine plusieurs dizaines de programmes libres dans une interface commune.\\
 SageMath permet de travailler sur une vaste gamme de Mathématiques. Au cours de ce stage je ne travaille que dans la partie combinatoire de Sage et plus précisemment dans les designs combinatoires.
 \vspace{3\baselineskip}
@@ -367,5 +339,10 @@ def blocking_set(s):
     incidence structure')  
 \end{lstlisting}
 
-
+\section*{Annexes}
+\includegraphics[scale=0.45]{dobble1.pdf}\\
+\begin{flushright}
+  \includegraphics[scale=0.53]{dobblecarte.png}
+\end{flushright}
+\includegraphics[scale=0.45]{dobble2.pdf}
 \end{document}
