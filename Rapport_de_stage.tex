@@ -216,7 +216,7 @@ Ici aussi, les droites ont une équation de la forme $ax + by + cz = 0$ avec $(a
 
 \subsubsection{Plan de Hughes}
 Jusqu'ici, tous les plans projectifs que nous avons vus étaient des plans desarguesiens : le théorème de Desargues est vérifié sur ces plans.\\
-Cependant, sur certains plans projectifs, le théorème de Desargues, c'est le cas des plans de Hughes.\vspace{2\baselineskip}\\
+Cependant, sur certains plans projectifs, le théorème de Desargues, c'est le cas des plans de Hughes.\vspace{1\baselineskip}\\
 
 Soit q un nombre premier impair (i.e. différent de 2).\\
 Le plan de Hughes se base sur le corps fini $\mathbb{F}_{q^2}$ en utilisant toutefois une multiplication définie différemment de la multiplication ordinaire et non-commutative.\\
@@ -224,8 +224,8 @@ On construit $q**2-q+1$ droites d'équation $x + \alpha \circ y + z = 0$ que l'o
 \begin{center}
  $ \{A^nL(\alpha) | 0 \leq n \leq q^2 + q\}$
 \end{center}
-J'ai ajouté la fonction HughesPlane dans le fichier $block\_design.py$ qui regroupe certaines fonctions comme $projective\_plane$ qui utilise la construction à partir des corps finis faite par la fonction $DesarguesianProjectivePlaneDesign$ aussi dans ce fichier. Cette fonction a été ajoutée à la version beta3 de Sage 6.8 le 4 Juin.
-Mon ticket sur le trac de Sage est visible à l'adresse : http://trac.sagemath.org/ticket/18527.\\
+J'ai fait puis ajouté la fonction HughesPlane dans le fichier $block\_design.py$ qui regroupe certaines fonctions comme $projective\_plane$ qui utilise la construction à partir des corps finis faite par la fonction $DesarguesianProjectivePlaneDesign$ aussi dans ce fichier.\\ Cette fonction a été acceptée pour être implémentée dans Sage, ce qui a été fait dans la version beta3 de Sage 6.8 le 4 Juin.
+Mon ticket sur le trac de Sage est visible à l'adresse : http://trac.sagemath.org/ticket/18527.\vspace{1\baselineskip}\\
 Cette fonction s'appuie sur deux autres fonctions dont une fabrique une matrice A comme expliqué ci-dessus et une autre qui normalise les points ( $(a,b,c)k = (a,b,c)$ ). La fonction principale $HughesPlane$ suit la méthode de construction expliquée précédemment.
 \begin{sageverbatim}
  sage: H = designs.HughesPlane(9)
@@ -271,7 +271,8 @@ Les droites $D_{0,70}$, $D_{1,59}$ et $D_{10,57}$ ne sont pas concourrantes.
 Plus concrètement voilà ce qu'il se passe dans ce plan de Hughes:
 \begin{center}
   \includegraphics[scale=1.5]{Hughestikz.pdf}
-  \end{center}
+\end{center}
+72 et 82 devraient être le même point si le théorème de Desargues s'appliquait ici.
 
 
 
@@ -395,11 +396,15 @@ def blocking_set(s):
         raise EmptySetError('There is no blocking set in this
     incidence structure')  
 \end{lstlisting}
+\newpage
+\thispagestyle{empty}
 
 \section*{Annexes}
-\includegraphics[scale=0.45]{dobble1.pdf}\\
-\begin{flushright}
-  \includegraphics[scale=0.53]{dobblecarte.png}
-\end{flushright}
-\includegraphics[scale=0.45]{dobble2.pdf}
+\includegraphics[scale=0.43]{dobble1.png}
+\includegraphics[scale=0.43]{dobble2.png}\\
+\includegraphics[scale=0.43]{dobble3.png}
+\includegraphics[scale=0.43]{dobble4.png}\\
+\includegraphics[scale=0.43]{dobble5.png}
+\includegraphics[scale=0.43]{dobble6.png}\\
+\includegraphics[scale=0.43]{dobble7.png}
 \end{document}
