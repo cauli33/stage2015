@@ -274,11 +274,26 @@ Plus concrètement voilà ce qu'il se passe dans ce plan de Hughes:
 \end{center}
 72 et 82 devraient être le même point si le théorème de Desargues s'appliquait ici.
 
-
-
-
-
-
+\subsubsection{Dobble}
+J'ai pu me procurer un jeu du \textit{Dobble}. En numérotant les symboles (bonhomme orange $\rightarrow$ 0, bombe $\rightarrow$ 1, ..., igloo $\rightarrow$ 56), j'ai pu créer la liste des droites en ajoutant les 2 cartes manquantes.
+\begin{sageverbatim}
+  sage: blocks = [[6,11,21,27,43,50,53,55],[4,10,20,26,35,39,48,53],
+        [8,10,28,31,34,45,54,55]], ... ,[0,46,48,34,32,27,52,14]]
+\end{sageverbatim}
+Après avoir importer la classe \textit{BalancedIncompleteBlockDesign}, on peut créer le plan projectif du \textit{Dobble}.
+\begin{sageverbatim}
+ sage: from sage.combinat.designs.bibd import BalancedIncompleteBlockDesign
+ sage: B=BalancedIncompleteBlockDesign(57,blocks)
+ sage: B
+ (57,8,1)-Balanced Incomplete Block Design
+\end{sageverbatim}
+Le \textit{Dobble} est un plan projectif d'ordre 7 ($k+1=8)$ et $k^2+k+1=57$).\\
+Je me suis alors servi d'un programme que j'avais précédemment fait pour les plans de Hughes. La fonction $is\_desarguesian\_plane$ itère sur les paires de triangles (non-plats) simplement pour vérifier que le théorème de Hughes. En pratique, si un plan n'est pas desarguesian, le programme affiche rapidement des centaines de paires de triangle pour lesquelles le théorème n'est pas vérifié et il n'est pas nécessaire de laisser tourner le programme plus longtemps.
+\begin{sageverbatim}
+ sage: is_desarguesian_plane(B)
+ True
+\end{sageverbatim}
+Le \textit{Dobble}(en ajoutant les cartes manquantes) est un plan projectif fini d'ordre 7 desarguesien. Il a donc été construit à partir du corps $\mathbb{F}_7$.
 \newpage
 
 \section{Le logiciel Sage}
