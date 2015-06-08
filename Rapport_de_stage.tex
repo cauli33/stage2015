@@ -52,7 +52,7 @@ $\cdot$ Il existe un quadrilatère (4 points tels que pour chaque triplet, les 3
   Pourtant il nous faut bien une intersection pour tout couple de droites. On définit alors les intersections dites ``à l'infini'', c'est l'idée de base de la géométrie projective. De la même manière que pour le point de fuite chez les peintres, on dit que deux droites parallèles s'intersectent à l'infini. Imaginez vous sur une route, les deux bordures sont bien parallèles mais en regardant au loin, nous avons l'impression que la route se rétrécit pour ne devenir\vspace{1\baselineskip} qu'un point.\\
 La première propriété nous dit maintenant que pour chaque couple de points, on a une unique droite. Nous allons donc construire la ``droite à l'infini'' qui passe par les points à l'infini (comme l'horizon dans la vie courante).
 \begin{center}
-\includegraphics[scale=1.5]{test_tikz.pdf}
+\includegraphics[scale=0.5]{test_tikz.pdf}
 \end{center}
 \vspace{2\baselineskip}
 Les 3 propositions sont bien vérifiées.
@@ -202,6 +202,9 @@ Les corps finis sont des outils importants pour construire des plans projectifs.
 Pour construire un plan projectif à partir du corps $GF(q)$,\\
 Nous allons donner aux points des coordonnées $(x,y,z)$ avec $x,y,z \in GF(q) et (x,y,z) \neq (0,0,0)$. Les points sont définis à multiplication près : pour $k \neq 0, k(x,y,z) = (kx,ky,kz) = (x,y,z)$.\\
 Ici aussi, les droites ont une équation de la forme $ax + by + cz = 0$ avec $(a,b,c) \neq (0,0,0)$. Les droites correspondantes seront notées $(a,b,c)$.
+\begin{center}
+  \includegraphics[scale=0.5]{droitestikz.pdf}
+  \end{center}
 
 \subsection{Plan Desarguesien}
 
@@ -308,11 +311,26 @@ SageMath permet de travailler sur une vaste gamme de Mathématiques. Au cours de
 \end{center}
 \vspace{3\baselineskip}
 Sage étant un logiciel libre, le code source est entièrement accessible et modifiable. Il est en constante évolution, plusieurs mises à jours stables sortent par année. Le développement de Sage (les implémentations de nouvelles fonctions, de nouvelles classes, les corrections de bugs) se fait par tou-te-s les utilisat-rice-teurs qui proposent via le Trac de Sage (application web Open Source de gestion de projets) leur apport qui est ensuite discuté et éventuellement validé.
+\newpage
+\subsection{Ajout d'une fonction dans Sage}
+Je prendrais ici l'exemple de la fonction \textit{HughesPlane}.\vspace{1\baselineskip}\\
+Après avoir codé une nouvelle fonction en langage Python, il est d'abord nécessaire de la tester avec le logiciel sage:\vspace{2\baselineskip}\\
+\includegraphics[scale=0.7]{hughes.png}\vspace{2\baselineskip}\\
+\includegraphics[scale=0.7]{hughessage.png}\\
+Si il n'y a pas de soucis de fonctionnement, on peut alors copier notre fonction dans le code de Sage. Nous allons ici le mettre dans le fichier $block\_design.py$ dans le dossier sage/src/sage/combinat/designs/.
+\newpage
+Toute fonction de Sage doit être accompagnée d'une documentation avec un format bien défini. On peut ainsi construire le manuel de référence ensuite.\\
+\begin{center}
+\includegraphics[scale=0.5]{hughesdoc.png}\\
+  Extrait de la documentation écrite dans $block\_design.py$\vspace{1\baselineskip}
 
-
-
-
-
+  \includegraphics[scale=0.5]{hughesdocmanual.png}
+  Extrait de la documentation dans le manuel de référence
+\end{center}
+Cette documentation doit contenir une phrase courte de description de la fonction. Ensuite une description plus complète peut être écrite. Si les sorties et les entrées de la fonction ne sont pas évidentes, il faut ajouer un bloc INPUT et un bloc OUTPUT. Comme on le voit ici, il est possible d'écrire des formules en LaTEX dans un bloc MATH, de faire des références à un article wikipedia, un site, une autre fonction. La documentation doit aussi contenir des exemples d'utilisation de la fonction et éventuellement des tests.\\
+On peut maintenant construire la librairie de Sage en utilisant la commande \textit{sage -b} dans un terminal. Les modifications qu'on a apporté seront maintenant prises en compte lorsqu'on utilisera Sage. Il est souvent nécessaire d'utiliser la commande \textit{sage -t block\_design.py} qui permet de tester les exemples et éventuellement d'afficher les erreurs dans le cas où il y en a. Par exemple:\vspace{1\baselineskip}\\
+\includegraphics[scale=0.6]{hugheserror.png}\vspace{1\baselineskip}
+Il ne reste alors plus qu'à construire le manuel de référence avec la commande \textit{sage -docbuild} afin de vérifier là aussi que la compilation de la documentation écrite dans le fichier donne ce que l'on attendait.
 
 
 
@@ -359,7 +377,7 @@ sage: p.solve()         # sage nous retourne la valeur maximale de l'objectif
 sage: p.get_values(x,y,z)    # on peut demander les valeurs des variables
 [4.0, 0.0, 1.6]
 \end{sageverbatim}
-
+\subsubsection{Les fonctions arc et blocking\_set}
 La programmation linéaire va nous être utile pour trouver les arcs et les blocking set dans les plans projectifs finis. En effet, en associant une valeur binaire à chaque point du plan : 1 si on prend le point dans l'ensemble recherché, 0 sinon.\\
 A partir de cet énoncé, on peut faire un programme pour trouver un arc de cardinalité maximale ou un \textit{committee} (un \textit{blocking set} de cardinalité minimale).
 
@@ -370,25 +388,26 @@ from sage.numerical.mip import MIPSolverException
 from sage.categories.sets_cat import EmptySetError
           
 def arc(s):   
-    p=MixedIntegerLinearProgram()
-    b=p.new_variable(binary=True)
+    p = MixedIntegerLinearProgram()
+    b = p.new_variable(binary=True)
 # La variable b comme une variable binaire #
 
     p.set_objective(p.sum(b[v] for v in s._points))
 # Notre objectif est le nombre de points dans notre arc #
 
     for i in s._blocks:
-        p.add_constraint(p.sum(b[k] for k in i)<=2)
+        p.add_constraint(p.sum(b[k] for k in i) <= 2)
 # On ne doit avoir au maximum que deux points d'un arc sur une ligne #
         
     try:
         p.solve()
-        r=p.get_values(b)
-        return [i for (i,j) in r.items() if j==1]
+        r = p.get_values(b)
+        return [i for (i,j) in r.items() if j == 1]
     except MIPSolverException:
         raise EmptySetError('There is  no arc in this incidence structure.')
 \end{lstlisting}
-\newpage
+La méthode \textbf{try}/\textbf{except} permet de tester un énoncé sans craindre les erreurs qui pourraient arrêter le programme. Ici, si \textit{p.solve()} fonctionne (i.e. on trouve des solutions à ce problème linéaire), alors on renvoie les résultats. Si l'erreur MIPSolverException est générée par le solveur (i.e. il ne trouve pas de solutions), on choisit alors de renvoyer l'erreur EmptySetError qui correspond aux cas où l'ensemble des solutions est vide.
+
 \begin{lstlisting}
 def blocking_set(s):
     p=MixedIntegerLinearProgram(maximization=False)
@@ -411,6 +430,20 @@ def blocking_set(s):
         raise EmptySetError('There is no blocking set in this
     incidence structure')  
 \end{lstlisting}
+\vspace{1\baselineskip}
+Les fonctions $blocking\_set$ et $arc$ ont été proposées sur le trac de Sage. A ce jour, elles sont encore en discussion sur le ticket $\#18608$.
+\newpage
+\section*{Le logiciel Git}
+Bien que le logiciel Git passe au second plan, ce logiciel m'a été utile pendant toute la durée de ce stage.\\
+Git est un logiciel de gestion de versions décentralisé. C'est donc un logiciel utilisés pour le développement et celui-ci ne se fait pas sur un serveur centralisé, chaque personne développe depuis son propre ``dépot''. Git est particulièrement utile lorsque plusieurs personnes travaillent sur un même projet pour ne pas se perdre dans les modifications des autres ou les écraser, etc... Même seul-e, git permet de garder un historique et les sauvegardes des anciennes versions du code source sur lequel on travaille.\\
+Jusqu'ici, il ne s'agit que d'un logiciel de gestion de sauvegardes. Git retient en plus qui a fait telle modification et pourquoi (la personne écrit une courte phrase pour chaque modification faite). On peut aussi fusionner deux versions d'un document en évitant d'écraser le travail de l'autre personne. En effet, git travaille sur plusieurs branches (versions parallèles d'un même projet).
+
+\subsection*{Pour Sage}
+Sage utilise git pour son développement. Sage utilise les branches \textit{master} et \textit{develop}. \textit{master} est la branche de la dernière version stable du logiciel Sage. \textit{develop} est la branche de développement de Sage, elle se fusionne à la branche \textit{master} lors d'une nouvelle version stable. Enfin, pour chaque ticket sur le trac, une branche git est créée, si la modification est validée sur ce ticket, la branche est fusionnée à la branche \textit{develop}. Bien sûr, je n'ai pas les autorisations de faire moi-même ces fusions. On peut néanmoins récupérer les versions de ces branches et accéder à tout l'historique depuis les premières étapes de création du logiciel. \vspace{2\baselineskip}\\
+
+En plus de l'utiliser pour participer au développement de Sage, git m'a permis de communiquer plus facilement tous les fichiers nécessaires à mon maitre de stage via GitHub qui est une sorte de réseau social pour développeurs sur lequel chaque personne peut poster son projet. Ainsi, j'ai pu envoyer et mettre à jour sur ce site tous les fichiers que je créais ou modifiais. A partir de ces fichiers, on peut me proposer des modifications sur une nouvelle branche que je peux choisir de fusionner avec la mienne ou encore récupérer les fichiers que j'ai mis en ligne.
+
+
 \newpage
 \thispagestyle{empty}
 
