@@ -14,6 +14,7 @@
 \usepackage{array,multirow,makecell}
 \usepackage{amssymb}
 \usepackage[margin=3cm]{geometry}
+\usepackage{colortbl}
 
 \newtheorem{Def}{Définition}[section]
 \newtheorem{Prop}[Def]{Proposition}
@@ -72,7 +73,10 @@ L'objectif de ce stage était de se familiariser avec les designs combinatoires 
 Dans ce rapport, je présenterais dans une première partie le LaBRI et ce qu'il s'y passe, puis j'aborderais tous les concepts mathématiques sur lesquels j'ai travaillé nécessaires à la compréhension de mes travaux, et enfin je présenterais Sage et les travaux que j'ai fait sur ce logiciel. 
 \newpage
 \section{Présentation du LaBRI}
-Le LaBRI est une unité de recherche associée à Bordeaux INP, à l'université de Bordeaux et au CNRS et depuis 2002 partenaire de l'Inria (Institut national de recherche en informatique et en automatique). Il y a aujourd'hui au LaBRI environ 320 personnes dont 113 enseignant-e-s chercheu-r-ses, 37 chercheu-r-ses, 22 personnels administratifs et plus de 140 contractuels (doctorant-e-s, ingénieur-e-s).\vspace{1\baselineskip}\\
+Le LaBRI est une unité mixte de recherche associée à Bordeaux INP, à l'université de Bordeaux et au CNRS et depuis 2002 partenaire de l'Inria (Institut national de recherche en informatique et en automatique) avec lequel sont mises en commun certaines équipes de rechercher. Il y a aujourd'hui au LaBRI environ 320 personnes dont 113 enseignant-e-s chercheu-r-ses, 37 chercheu-r-ses, 22 personnels administratifs et plus de 140 contractuels (doctorant-e-s, ingénieur-e-s).\vspace{1\baselineskip}\\
+Le LaBRI est en contrat quinquennal : un rapport est fait tous les 5 ans sur les recherches effectuées dont dépendront le renouvellement du contrat pour les 5 années à suivre. Ce contrat est fait par le HCERS (Haut Conseil de l'Evaluation de la Recherche et de l'enseignement Supérieur).\\
+Les financements du LaBRI sont accordés par Bordeaux INP, l'université de Bordeaux et le CNRS. Les personnes travaillant au LaBRI sont engagées avec l'une de ces trois institutions et ont été affectées à ce laboratoire. Les chercheu-r-ses sont sous contrat avec le CNRS et les personnes engagées par l'université et Bordeaux INP sont plutot des enseignant-e-s chercheu-r-ses.\\
+Il y a autant de recherche théorique que de recherche appliquée. Certaines personnes en recherche appliquée ont pu avoir des financements pour leur projet par des entreprises comme Thales pour les drones ou Sogeti sur l'adaptation et la diffusion des flux vidéo. Pour la recherche théorique, les financements sont plutôt nécessaires pour rencontrer les autres personnes travaillant sur le même sujet ailleurs en France ou dans le monde. Pour cela, des appels PEPS (Projets Exploratoires Premier Soutien) sont faits par le CNRS et des aides sont accordées par l'Agence Nationale de la Recherche.\\
 Six grandes équipes composent le laboratoire:
 \begin{itemize}
 \item Combinatoire et Algorithmique
@@ -86,7 +90,14 @@ Six grandes équipes composent le laboratoire:
 \item Modèles et Algorithmes pour la Bioinformatique et la Visualisation d'informations
 \item Programmation, Réseaux et Systèmes
 \item Supports et Algorithmes pour les applications numériques hautes performances
-  \end{itemize}
+\end{itemize}
+J'ai travaillé pendant ce stage dans l'équipe du thème Combinatoire et Algorithmique.\vspace{1\baselineskip}\\
+Le LaBRI collabore avec l'Inria depuis 2002 mais certaines équipes ont aussi des projets avec d'autres institus ou laboratoires de recherche. L'équipe ``Modèles et Algorithmes pour la Bioinformatique et la Visualisation d'informations'' travaille avec l'université Bordeaux Segalen. L'équipe ``Image et Son'' a fait des travaux avec l'université Bordeaux Montaigne ainsi que le laboratoire PACEA (laboratoire d'archéologie) sur les sciences du langage et en archéologie comme par exemple un projet d'impression 3D d'ossements. 
+
+Le travail est rythmé par un grand nombre d'exposés et de conférences. Les sujets étant aussi différents que les équipes présentes au LaBRI j'ai assisté à trois conférences au cours de mon stage sur des sujets que j'étais susceptible de comprendre ou en rapport avec le sujet du stage.\\
+J'ai donc assisté à une leçon de Bruno Salvy, enseignant-chercheur à l'ENS Lyon et à l'Inria sur ``\textit{Les récurrences et équations différentielles linéaires vues comme structures de données}'' à l'IMB (Institut de Mathématiques de Bordeaux). \\
+Enfin, j'ai assisté à une conférence par Alain Franc, chercheur à l'Inria dans l'équipe Pléiade sur l'élaboration de modèles mathématiques pour schématiser la biodiversité sur l'exemple de la forêt guyanaise.
+
 \newpage
 \section{Les plans projectifs finis}
 \subsection{Définitions}
@@ -356,13 +367,19 @@ Plus concrètement voilà ce qu'il se passe dans ce plan de Hughes:
 
 Il est basé sur le langage Python et combine plusieurs dizaines de programmes libres dans une interface commune.\\
 SageMath permet de travailler sur une vaste gamme de Mathématiques. Au cours de ce stage je ne travaille que dans la partie combinatoire de Sage et plus précisemment dans les designs combinatoires.
-\vspace{3\baselineskip}
-\begin{center}
-  \includegraphics[scale=0.6]{matieres.jpg}
-\end{center}
-\vspace{3\baselineskip}
+\vspace{1\baselineskip}\\
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+  \hline
+  algebras & calculus & \cellcolor{red}\color{white}{combinat} & crypto & databases & dynamics & finances & functions\\
+  \hline
+  geometry & graphs & groups & interacts & interfaces & logic & matrix & numerical\\
+  \hline
+  probability & quadratic\_forms & rings & sat & sets & stats & structure & symbolic\\
+  \hline
+\end{tabular}
+\vspace{1\baselineskip}\\
 Sage étant un logiciel libre, le code source est entièrement accessible et modifiable. Il est en constante évolution, plusieurs mises à jours stables sortent par année. Le développement de Sage (les implémentations de nouvelles fonctions, de nouvelles classes, les corrections de bugs) se fait par tou-te-s les utilisat-rice-teurs qui proposent via le Trac de Sage (application web Open Source de gestion de projets) leur apport qui est ensuite discuté et éventuellement validé.
-\newpage
+
 \subsection*{Mon travail sur Sage}
 \begin{itemize}
 \item Ajout de la fonction \textit{is\_projective\_plane} dans \textit{incidence\_structure.py}\\
@@ -385,16 +402,17 @@ Sage étant un logiciel libre, le code source est entièrement accessible et mod
 \vspace{1\baselineskip}
   Encore en discussion sur le trac à la remise du rapport de stage.\\
 \end{itemize}  
-
+\newpage
 \subsection{Ajout d'une fonction dans Sage}
 Je prendrais ici l'exemple de la fonction \textit{HughesPlane}.\vspace{1\baselineskip}\\
 Après avoir codé une nouvelle fonction en langage Python, il est d'abord nécessaire de la tester avec le logiciel sage:
 \begin{center}
   \includegraphics[scale=0.7]{hughes.png}\\
   La fonction dans le fichier hughes.py
-\end{center}
-\vspace{1\baselineskip}
+\vspace{1\baselineskip}\\
 \includegraphics[scale=0.7]{hughessage.png}\vspace{1\baselineskip}\\
+Test de la fonction dans Sage
+\end{center}
 Si il n'y a pas de soucis de fonctionnement, on peut alors copier notre fonction dans le code de Sage. Nous allons ici le mettre dans le fichier $block\_design.py$ dans le dossier sage/src/sage/combinat/designs/.
 \newpage
 Toute fonction de Sage doit être accompagnée d'une documentation avec un format bien défini. On peut ainsi construire le manuel de référence ensuite.\\
@@ -525,6 +543,11 @@ Sage utilise git pour son développement. Sage utilise les branches \textit{mast
 En plus de l'utiliser pour participer au développement de Sage, git m'a permis de communiquer plus facilement tous les fichiers nécessaires à mon maitre de stage via GitHub qui est une sorte de réseau social pour développeurs sur lequel chaque personne peut poster son projet. Ainsi, j'ai pu envoyer et mettre à jour sur ce site tous les fichiers que je créais ou modifiais. A partir de ces fichiers, on peut me proposer des modifications sur une nouvelle branche que je peux choisir de fusionner avec la mienne ou encore récupérer les fichiers que j'ai mis en ligne.
 
 
+\newpage
+\section*{Bilan}
+En regardant l'intitulé de mon sujet de stage, je pense avoir aujourd'hui avoir tout assimilé et avoir atteint mes objectifs. Mon stage n'étant pas fini, il me reste encore quelques semaines pour m'occuper du ticket sur les arcs et les blocking sets, m'intéresser aux plans de Hall et peut-être implémenter une fonction dans Sage pour construire ces plans aussi. J'ai compris comment le développement de Sage se faisait et acquis beaucoup de connaissances en Python.\\
+J'ai appris de nouveaux concepts mathématiques et j'ai du me mettre à lire la littérature anglophone, bien plus vaste que la littérature disponible en français, tant sur les plans projectifs que pour le développement de Sage et les outils de programmation.\\
+J'ai surtout pu observer la vie d'un laboratoire de recherche en informatique et le métier de chercheur.
 \newpage
 \thispagestyle{empty}
 
