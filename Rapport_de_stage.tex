@@ -1,3 +1,4 @@
+%ARC --> 3 cartes de Dobble  Blocking set:2 tas
 \documentclass[a4paper]{article}
 
 \title{Rapport de stage}
@@ -63,6 +64,12 @@ Je remercie mon tuteur, Mr Jai pour le suivi tout au long de mon stage.\\
 
 \newpage
 \section*{Introduction}
+Ce rapport est consacré au stage que j'ai effectué dans le cadre de ma formation à la Prépa des INP. Je devais effectuer un stage d'une durée minimale de 6 semaines afin de découvrir les métiers correspondant à ma formation.
+J'ai donc fait mon stage au LaBRI, Laboratoire de Recherche Informatique à Bordeaux, du 4 Mai au 26 Juin où l'on m'a proposé un stage avec pour sujet ``\textit{Les designs combinatoires et le logiciel Sage}''.\vspace{1\baselineskip}\\
+Ce stage m'a permis de mettre en pratique les connaissances acquises pendant les cours d'Informatique à la Prépa des INP, le logiciel Sage étant basé sur le langage de programmation Python. Il m'a permis d'acquérir de nouvelles compétences sur la programmation en Python, les méthodes de développement d'un logiciel open source avec par exemple le logiciel git et sur la rédaction des textes (y compris ce rapport) avec LaTEX.\vspace{1\baselineskip}\\
+Au cours de ce stage j'ai pu découvrir les métiers de la recherche et le fonctionnement d'un laboratoire de recherche en Informatique. Il m'a conforté dans mon choix de l'Enseirb-Matmeca en filière Informatique comme école d'ingénieur et me fait réfléchir à une possible continuation sur un doctorat pour ensuite travailler dans la recherche.\vspace{1\baselineskip}\\
+L'objectif de ce stage était de se familiariser avec les designs combinatoires et découvrir le fonctionnement du logiciel Sage et son développement afin d'implémenter certaines de ces constructions dans ce logiciel. \\
+Dans ce rapport, je présenterais dans une première partie le LaBRI et ce qu'il s'y passe, puis j'aborderais tous les concepts mathématiques sur lesquels j'ai travaillé nécessaires à la compréhension de mes travaux, et enfin je présenterais Sage et les travaux que j'ai fait sur ce logiciel. 
 \newpage
 \section{Présentation du LaBRI}
 Le LaBRI est une unité de recherche associée à Bordeaux INP, à l'université de Bordeaux et au CNRS et depuis 2002 partenaire de l'Inria (Institut national de recherche en informatique et en automatique). Il y a aujourd'hui au LaBRI environ 320 personnes dont 113 enseignant-e-s chercheu-r-ses, 37 chercheu-r-ses, 22 personnels administratifs et plus de 140 contractuels (doctorant-e-s, ingénieur-e-s).\vspace{1\baselineskip}\\
@@ -172,8 +179,12 @@ Je me suis alors servi d'un programme que j'avais précédemment fait pour les p
  sage: is_desarguesian_plane(B)
  True
 \end{sageverbatim}
-Le \textit{Dobble}(en ajoutant les cartes manquantes) est un plan projectif fini d'ordre 7 desarguesien. Il a donc été construit à partir du corps $\mathbb{F}_7$.
-\vspace{3\baselineskip}
+Le Dobble(en ajoutant les cartes manquantes) est un plan projectif fini d'ordre 7 desarguesien. Il a donc été construit à partir du corps $\mathbb{F}_7$.
+\vspace{2\baselineskip}\\
+Le Dobble nous permet aussi de mieux comprendre les notions d'arc et de blocking set. Ici, les points sont les cartes et les droites sont les points.\vspace{2\baselineskip}\\
+Si on prend un tas de cartes du Dobble, telles qu'il n'y ait pas plus de deux cartes contenant le même symbole, on a un arc. \\
+Si on peut séparer le jeu du Dobble en deux tas tels que que tous les symboles soient représentés dans chacun des tas, on a un blocking set. En effet, pour chaque droite, on trouve au moins un point de chaque droite dans chacun des tas et puisqu'on en trouve au moins un dans l'autre tas aussi, aucun des 2 tas ne contient tous les points de la droite.
+\newpage
 \subsection{Les corps finis}
 \begin{Def}
   Un corps fini est un corps commutatif qui est en plus fini.\\
@@ -404,17 +415,14 @@ Il ne reste alors plus qu'à construire le manuel de référence avec la command
 
 \newpage
 \subsection{La programmation linéaire}
-  Un programme linéaire est un système d’équations linéaires dont on cherche une solution optimale. Résoudre un programme linéaire revient à trouver la valeur des variables qui maximise (ou minimise) une fonction objectif, tout en satisfaisant un système de contraintes.
-\vspace{1\baselineskip}
+  Un programme linéaire est un système d’équations linéaires dont on cherche une solution optimale. Résoudre un programme linéaire revient à trouver la valeur des variables qui maximise (ou minimise) une fonction objectif, tout en satisfaisant un système de contraintes.\vspace{1\baselineskip}\\
 \textbf{Exemple}\\
   On cherche à maximiser $x + y + 3z$ tel que : \\
   $x + 2y \leq 4$\\
   $5z - y \leq 8$\\
-  La solution ici est $x = 4, y = 0, z = 1.6$
-\vspace{1\baselineskip}
+  La solution ici est $x = 4, y = 0, z = 1.6$\vspace{1\baselineskip}\\
 La programmation linéaire lorsqu'on l'utilise est pour nous une boite noire. Le fonctionnement de cette boite est compliqué et bien optimisé. Il nous évite la programmation de grandes boucles très couteuses et bien trop longues dès que l'on a suffisamment de variables. Ces boucles testeraient alors toutes les combinaisons pour chercher celle qui maximise la fonction objectif (et encore, cette méthode n'est pas vraiment possible sur les réels ou les entiers).\\
-C'est un outil très utile pour les problèmes combinatoires.
-\vspace{1\baselineskip}
+C'est un outil très utile pour les problèmes combinatoires.\vspace{1\baselineskip}\\
 \textbf{Exemple}\\
   Pour comprendre les problèmes que l'on va chercher à résoudre, nous allons prendre un exemple plus concret:\vspace{1\baselineskip} \\
   On a devant nous notre sac à dos ayant une capacité limitée C que nous devons remplir avec des objets à notre disposition ayant chacun une utilité et un poids propres fixés entre 0 et 1. Par exemple, une gourde aura un poids de 0.39 pour une utilité de 0.85 tandis qu'un livre aura un poids de 0.35 pour une utilité de 0.26 (selon le livre).\vspace{1\baselineskip}\\
@@ -501,7 +509,7 @@ Les fonctions $blocking\_set$ et $arc$ ont été proposées sur le trac de Sage.
 
 \textbf{Remarque}\\
 Ces programmes pour trouver les arcs et les blocking set des plans projectifs sont efficaces pour les plans de petite taille mais deviennent trop lents pour des plans d'ordre suffisamment grands. Ceci est du au MIPSolver qui n'est pas assez efficace lorsque le nombre de variables est trop grand (étant donné que ce nombre évolue en $k^2 + k + 1$ par rapport à l'ordre).\\
-J'ai suivi la veille de la remise de ce rapport un atelier sur les solveurs SATavec Laurent Simon, chercheur au LaBRI et professeur à l'Enseirb-Matmeca. Ces solveurs travaillent sur des variables booléennes (True / False) et cherchent quelle doit être la valeur de ces variables pour satisfaire une formule de logique propositionnelle (une formule utilisant les variables et les connecteurs 'et','ou','non','implique','équivaut'). Les solveurs SAT sont plus efficaces que les solveurs MIP.
+J'ai suivi la veille de la remise de ce rapport un atelier sur les solveurs SATavec Laurent Simon, chercheur au LaBRI et professeur à l'Enseirb-Matmeca. Ces solveurs travaillent sur des variables booléennes (True / False) et cherchent quelle doit être la valeur de ces variables pour satisfaire une formule de logique propositionnelle (une formule utilisant les variables et les connecteurs 'et', 'ou', 'non', 'implique', 'équivaut'). Les solveurs SAT sont plus efficaces que les solveurs MIP.
 \newpage
 \section*{Le logiciel Git}
 Bien que le logiciel Git passe au second plan, ce logiciel m'a été utile pendant toute la durée de ce stage.\\
