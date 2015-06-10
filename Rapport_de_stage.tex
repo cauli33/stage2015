@@ -21,7 +21,7 @@
 
 \definecolor{string-col}{rgb}{0.8,0.1,0.1}
 \definecolor{keyword-col}{rgb}{0.2,0.2,0.6}
-\definecolor{comment-col}{rgb}{0.5,0.5,0.5}
+\definecolor{comment-col}{rgb}{0.6,0.3,0.1}
 
 \newtheorem{Def}{Définition}[section]
 \newtheorem{Prop}[Def]{Proposition}
@@ -45,12 +45,15 @@ numbers=left
 
 \vspace{1cm}
 \begin{center}
-{\Huge Rapport de stage \ldots} \\ \vspace{0.3cm}
-{\large Quentin Honoré}
+{\Huge Rapport de stage} \\ \vspace{0.2cm}
+{\LARGE LaBRI du 4 Mai au 26 Juin}\\ \vspace{0.3cm}
+{\large Quentin Honoré} \\
 \end{center}
 \hspace{-1.5cm}
-\includegraphics{garde.pdf}
-
+\includegraphics[scale = 0.95]{garde.pdf}
+\newpage
+\thispagestyle{empty}
+\strut
 \newpage
 \tableofcontents
 \newpage
@@ -63,8 +66,8 @@ Enfin, je remercie l'équipe entière du LaBRI de m'avoir proposé ce stage et d
 \section*{Introduction}
 Ce rapport est consacré au stage que j'ai effectué dans le cadre de ma formation à la Prépa des INP. Je devais effectuer un stage d'une durée minimale de 6 semaines afin de découvrir les métiers correspondant à ma formation.
 J'ai donc fait mon stage au LaBRI, Laboratoire de Recherche Informatique à Bordeaux, du 4 Mai au 26 Juin où l'on m'a proposé un stage avec pour sujet ``\textit{Les designs combinatoires et le logiciel Sage}''.\\
-Ce stage m'a permis de mettre en pratique les connaissances acquises pendant les cours d'Informatique à la Prépa des INP, le logiciel Sage étant basé sur le langage de programmation Python. Il m'a permis d'acquérir de nouvelles compétences sur la programmation en Python, les méthodes de développement d'un logiciel open source avec par exemple le logiciel git et sur la rédaction des textes (y compris ce rapport) avec \LaTeX.\\
-Au cours de ce stage j'ai pu découvrir les métiers de la recherche et le fonctionnement d'un laboratoire de recherche en Informatique. Il m'a conforté dans mon choix de l'Enseirb-Matmeca en filière Informatique comme école d'ingénieur et me fait réfléchir à une possible continuation sur un doctorat pour ensuite travailler dans la recherche.\\
+Ce stage m'a permis de mettre en pratique les connaissances acquises pendant les cours d'Informatique à la Prépa des INP, le logiciel Sage étant basé sur le langage de programmation Python. Il m'a permis d'acquérir de nouvelles compétences sur la programmation en Python et sur les méthodes de développement d'un logiciel open source avec par exemple le logiciel git et sur la rédaction des textes (y compris ce rapport) avec \LaTeX. J'ai aussi commencé à lire la littérature anglophone, bien plus vaste que la littérature disponible en français, tant sur les plans projectifs que pour le développement de Sage et les outils de programmation. \\
+Au cours de ce stage j'ai pu découvrir les métiers de la recherche et le fonctionnement d'un laboratoire de recherche en Informatique. Il m'a conforté dans mon choix de l'Enseirb-Matmeca en filière Informatique comme école d'ingénieur et m'a fait réfléchir à une possible continuation sur un doctorat pour ensuite travailler dans la recherche.\\
 L'objectif de ce stage était d'abord de se familiariser avec les designs combinatoires. Ensuite, il m'a fallu découvrir le fonctionnement du logiciel Sage et comment se fait son développement afin d'y implémenter certaines des constructions étudiées.\bigskip \\
 Dans ce rapport, je présenterais dans une première partie le LaBRI et ce qu'il s'y passe, puis j'aborderais tous les concepts mathématiques sur lesquels j'ai travaillé nécessaires à la compréhension de mes travaux, et enfin je présenterais Sage et les travaux que j'ai fait sur ce logiciel. 
 \newpage
@@ -117,7 +120,7 @@ On va essayer de construire le plus petit plan projectif fini. On construit donc
 \begin{center}
 \includegraphics[scale=0.5]{planproj1.pdf}
 \end{center}
-On voit alors que les deux droites horizontales ne s'intersectent pas. De même, pour les deux droites verticales et les deux diagonales. Il nous faut alors construire une intersection pour chacune de ces paires de droite. On définit alors les intersections dites ``à l'infini'', c'est l'idée de base de la géométrie projective. De la même manière que pour le point de fuite chez les peintres, on dit que deux droites parallèles s'intersectent à l'infini. Imaginez vous sur une route sans virage, les deux bordures sont bien parallèles mais en regardant au loin, nous avons l'impression que la route se rétrécit pour ne devenir qu'un point.\\
+On voit alors que les deux droites horizontales ne se coupent pas. De même, pour les deux droites verticales et les deux diagonales. Il nous faut alors construire une intersection pour chacune de ces paires de droite. On définit alors les intersections dites ``à l'infini'', c'est l'idée de base de la géométrie projective. De la même manière que pour le point de fuite chez les peintres, on dit que deux droites parallèles se coupent à l'infini. Imaginez vous sur une route sans virage, les deux bordures sont bien parallèles mais en regardant au loin, nous avons l'impression que la route se rétrécit pour ne devenir qu'un point.\\
 \begin{center}
 \includegraphics[scale=0.5]{planproj2.pdf}
 \end{center}
@@ -128,20 +131,21 @@ En ajoutant une droite ``à l'infini'' (comme un horizon), on obtient notre plan
 \end{center}
 \vspace{2\baselineskip}
 \begin{Prop}
-Soit (P,D) un plan projectif fini.\\
-Alors toutes les droites contiennent le même nombre de points. Par symétrie, par tout point passe le même nombre de droites. Soit $k+1$ $(k\geq2)$ ce nombre alors:
-\begin{center}
-$card(D)=card(P)=k^2+k+1$
-\end{center}
-On appelle ce $k$ l'ordre du plan
+  Soit (P,D) un plan projectif fini. Alors il existe un entier $k$ ($k \geq 2$) tel que:
+  \begin{itemize}
+  \item Chaque droite contient $k+1$ points.
+  \item Par chaque point passent $k+1$ droites.
+  \item $card(D) = card(P)=k^2+k+1$
+    \end{itemize}
+Ce nombre $k$ est appelé \emph{ordre} du plan.
 \end{Prop}
 \textbf{Preuve}\\
-On va d'abord montrer que toutes les droites ont le même nombre de points. Prenons deux droites $D_1$ et $D_2$ de $k+1$ points, ces deux droites s'intersectent en un point. Etant donné qu'il existe un quadrilatère, il existe un point p tel que $p \notin D_1$ et $p \notin D_2$. Pour chacun des $k$ points x de $D_1$ différents du point d'intersection, il existe une droite passant par x et p. Cette droite intersecte $D_2$ en un point y. On vient de créer une bijection des points de $D_1$ dans les points de $D_2$. Elles ont donc le même nombre de points $k$.\smallskip\\
-On montre maintenant qu'il y a autant de points dans une droite que de droites passant par un point. On reprend la situation précédente, un point p et deux droites $D_1$ et $D_2$ ne passant pas par p (il est toujours possible de trouver ces deux droites quel que soit p car on a un quadrilatère). Pour chacun des k points de $D_1$ (différent de l'intersection entre $D_1$ et $D_2$), on fait passer une droite par p qui intersecte $D_2$. En ajoutant la droite entre le point d'intersection et p, on a alors $k+1$ droites passant par p.\smallskip\\
+On va d'abord montrer que toutes les droites ont le même nombre de points. Prenons deux droites $D_1$ et $D_2$, ces deux droites se coupent en un point. Etant donné qu'il existe un quadrilatère, il existe un point p tel que $p \notin D_1$ et $p \notin D_2$. Pour chacun des points x de $D_1$ différents du point d'intersection, il existe une droite passant par x et p. Cette droite coupe $D_2$ en un seul point y. On vient de créer la bijection $x \longrightarrow y$ des points de $D_1$ dans les points de $D_2$ : x n'a qu'une seule image et on trouve quelque soit y un seul antécédent en refaisant la construction inverse (en commencant par la droite passant par y et p). Elles ont donc le même nombre de points que l'on note $k+1$.\smallskip\\
 \begin{center}
   \includegraphics[scale=1]{preuve.pdf}
   \end{center}
-En effet, si on considère un point p, $k+1$ droites passent par ce point. Sur chacune de ces droites, il y a $k+1$ points, donc $k$ si on ne compte pas le point p. On a donc $k(k+1)$ points en plus du point p, soit:
+On montre maintenant qu'il y a autant de points dans une droite que de droites passant par un point. On prend un point p et une droite D ne contenant pas p. Pour chacun des $k+1$ points de $D$, on fait passer une droite entre p et ce point. On a donc $k+1$ droites passant par ce point. Supposons qu'il y ait une autre droite D' passant par p. Alors, on peut trouver l'intersection entre D et D' qui par définition est à la fois un point de D et de D'. Comme cette intersection est un point de D, il existe déja une droite passant par par celle-ci et par p. Or, on sait que par deux points passent une unique droite, donc $D'=D$.\\
+Montrons maintenant que le nombre de points est $k^2+k+1$. Si on considère un point p, $k+1$ droites passent par ce point. Sur chacune de ces droites, il y a $k+1$ points, donc $k$ si on ne compte pas le point p. On a donc $k(k+1)$ points en plus du point p, soit:
 \begin{center}
 $card(P)=k(k+1)+1=k^2+k+1$
 \end{center}
@@ -155,7 +159,7 @@ $2^2+2+1=7$ \\
   Un arc dans un plan projectif est un ensemble de points tel que tout triplet dans cet ensemble n'est pas aligné.
 \end{Def}
 \begin{Def}{Ensemble bloquant}\\
- $\cdot$ Un ensemble bloquant (\emph{blocking set} en anglais) est un ensemble de points dans un plan projectif que chaque ligne intersecte mais qui ne contient pas une ligne entière.\\
+ $\cdot$ Un ensemble bloquant (\emph{blocking set} en anglais) est un ensemble de points dans un plan projectif que chaque ligne coupe mais qui ne contient pas une ligne entière.\\
   $\cdot$ Un ensemble bloquant de plus petite cardinalité est appelé \emph{committee} en anglais.\\
 \end{Def}
 \bigskip
@@ -170,11 +174,16 @@ Cette propriété est toujours vérifiée dans le plan euclidien, on se place ic
 \newpage
 \subsection{Le jeu du Dobble}
 Le jeu du Dobble est un exemple de plan projectif fini. Si vous ne le connaissez pas, le Dobble est un jeu composé de 55 cartes sur chacune desquelles sont dessinés 8 symboles\vspace{1\baselineskip} différents.\\
-  A chaque tour, il faut reconnaître le plus rapidement quel est le symbole commun entre sa propre carte et celle au milieu. Le jeu ne serait alors pas juste si l'un-e des joueu-r-ses avait deux symboles en commun avec la carte du milieu tandis que l'autre n'en a aucun.
+  \begin{minipage}{0.55\linewidth}
+A chaque tour, il faut reconnaître le plus rapidement quel est le symbole commun entre sa propre carte et celle au milieu. Le jeu ne serait alors pas juste si l'un-e des joueu-r-ses avait deux symboles en commun avec la carte du milieu tandis que l'autre n'en a aucun.
   Ces cartes sont donc construites de telle manière que pour toute paire de carte, il y ait un et un seul symbole en commun. On peut voir le Dobble comme un plan projectif en prenant pour droites les cartes et pour points les symboles mais aussi inversement en prenant pour points les cartes et pour droites les symboles.\vspace{1\baselineskip}\\
+\end{minipage}\hfill
+\begin{minipage}{0.55\linewidth}
 \begin{center}
 \includegraphics[scale=0.3]{dobble-2.jpg}
 \end{center}
+\end{minipage}
+
 Avec 8 symboles par carte, on a donc un plan projectif d'ordre 7. Or $7^2+7+1=57$, il manque donc 2 cartes au Dobble! Si on étudie les cartes, on voit bien que le bonhomme de neige n'apparait que sur 6 cartes et quelques autres symboles sur 7 cartes. On arrive au même jeu si l'on construit nous même un plan projectif d'ordre 7 et qu'on retire 2 droites passant par un même point à la fin.
 En ajoutant ces deux cartes manquantes, le jeu du Dobble vérifie toutes les propriétés des plans projectifs. Néanmoins, même avec 2 cartes en moins, le Dobble garde sa propriété la plus importante: il y a toujours un unique symbole pour deux cartes même en enlevant 2 cartes. Ceci est d'ailleurs vrai pour tout sous-ensemble du jeu du Dobble. Que l'on prenne deux cartes d'un sous-ensemble ou deux cartes du jeu complet, tant que le jeu de base a été construit avec cette propriété, on aura toujours un symbole en commun.\vspace{1\baselineskip}\\
 J'ai pu me procurer un jeu du Dobble. En numérotant les symboles (bonhomme orange $\rightarrow$ 0, bombe $\rightarrow$ 1, ..., igloo $\rightarrow$ 56), j'ai pu créer la liste des droites en ajoutant les 2 cartes manquantes et les manipuler avec le logiciel Sage.
@@ -192,7 +201,7 @@ Après avoir importé la classe \texttt{BalancedIncompleteBlockDesign}, on peut 
 Les \textit{Balanced Incomplete Block Design} sont des designs combinatoires ou plus précisemment des structures d'incidence avec 3 paramètres, ici $(57, 8, 1)$, ce qui signifie qu'il y a dans cette structure 57 points, 8 points par droite et par deux points passent une droite, ce qui correspond parfaitement à ce que l'on a vu sur les plans projectifs (ici $k=7$ : $k+1=8$ et $k^2+k+1=57$).
 Le Dobble est un plan projectif d'ordre 7.
 \newpage
-Je me suis alors servi d'un programme que j'avais précédemment fait pour les plans de Hughes. La fonction \texttt{is\_desarguesian\_plane} itère sur les paires de triangles (non-plats) simplement pour vérifier que la propriété de Desargues est vérifiée. En pratique, si un plan n'est pas desarguesien, le programme affiche rapidement des centaines de paires de triangle pour lesquelles le théorème n'est pas vérifié et il n'est pas nécessaire de laisser tourner le programme plus longtemps:
+Je me suis alors servi d'un programme que j'avais fait précédemment pour les plans de Hughes. La fonction \texttt{is\_desarguesian\_plane} itère sur les paires de triangles (non-plats) simplement pour vérifier que la propriété de Desargues est vérifiée. En pratique, si un plan n'est pas desarguesien, le programme affiche rapidement des centaines de paires de triangle pour lesquelles le théorème n'est pas vérifié et il n'est pas nécessaire de laisser tourner le programme plus longtemps:
 \begin{sageverbatim}
  sage: is_desarguesian_plane(B)
   
@@ -201,8 +210,8 @@ J'ai laissé tourner le programme longtemps mais celui-ci est beaucoup trop long
 On peut considérer que le Dobble (en ajoutant les cartes manquantes) est un plan projectif fini d'ordre 7 desarguesien (comme dit précédemment, si il ne l'était pas, le programme aurait rapidement affiché beaucoup de combinaisons qui ne vérifient pas la propriété de Desargues).
 \bigskip\\
 Le Dobble nous permet aussi de mieux comprendre les notions d'arc et de blocking set. Ici, les points sont les cartes et les droites sont les points:\\
-$\cdot$ Un arc est un tas de cartes telles qu'il n'y ait pas plus de deux cartes contenant le même symbole, on a un arc. \\
-$\cdot$ Un ensemble bloquant est un des deux tas lorsque l'on sépare le jeu du Dobble de telle que que tous les symboles soient représentés dans chacun des deux tas. En effet, pour chaque droite, on trouve au moins un point de chaque droite dans chacun des tas et puisqu'on en trouve au moins un dans l'autre tas aussi, aucun des 2 tas ne contient tous les points de la droite.
+$\cdot$ Un arc est un tas de cartes tel qu'il n'y ait pas plus de deux cartes contenant le même symbole, on a un arc. \\
+$\cdot$ Un ensemble bloquant est un des deux tas lorsque l'on sépare le jeu du Dobble de telle manière que tous les symboles soient représentés dans chacun des deux tas. En effet, pour chaque droite, on trouve au moins un point de chaque droite dans chacun des tas et puisqu'on en trouve au moins un dans l'autre tas aussi, aucun des 2 tas ne contient tous les points de la droite.
 \newpage
 \subsection{Les corps finis}
 Les plans projectifs que j'ai étudiés sont tous construits en utilisant les corps finis.
@@ -355,7 +364,7 @@ Cette fonction s'appuie sur deux autres fonctions dont une fabrique une matrice 
  sage: H
  (91,10,1)-Balanced Incomplete Block Design
 \end{sageverbatim}
-Nous allons montrer que ce plan de Hughes n'est pas desarguesien. J'ai recherché avec un algorithme les points qui nous permettraient de montrer ceci, je prends donc ici les triangles $(0,1,10)$ et $(57, 70, 59)$. Nous allons montrer que les intersection $D_{0,1} \cap D_{57,70}$, $D_{1,10} \cap D_{70,59}$ et $D_{10,0} \cap D_{59,57}$ sont alignées tandis que les droites $D_{0,70}$, $D_{1,59}$ et $D_{10,57}$ ne s'intersectent pas en un seul point.La méthode $.blocks()$ depuis une structure d'incidence permet de nous donner la liste des droites. Il y en a 91 donc je me contente d'en afficher 4.
+Nous allons montrer que ce plan de Hughes n'est pas desarguesien. J'ai recherché avec un algorithme les points qui nous permettraient de montrer ceci, je prends donc ici les triangles $(0,1,10)$ et $(57, 70, 59)$. Nous allons montrer que les intersection $D_{0,1} \cap D_{57,70}$, $D_{1,10} \cap D_{70,59}$ et $D_{10,0} \cap D_{59,57}$ sont alignées tandis que les droites $D_{0,70}$, $D_{1,59}$ et $D_{10,57}$ ne se rejoignent pas en un seul point.La méthode $.blocks()$ depuis une structure d'incidence permet de nous donner la liste des droites. Il y en a 91 donc je me contente d'en afficher 4.
 \begin{sageverbatim}
  sage: blocks = H.blocks()
  sage: blocks[:3]
@@ -446,47 +455,7 @@ Tous les fichiers dont je parle ici sont dans le répertoire \texttt{sage/src/sa
 \end{itemize}  
 \newpage
 \subsection{Ajout d'une fonction dans Sage}
-Dans cette section, je vais détailler les étapes nécessaires pour intégrer une fonction en Sage et ensuite la proposer sur le trac. Je prendrais l'exemple de la fonction \texttt{HughesPlane}.\medskip\\ 
-\begin{lstlisting}
-def HughesPlane(q2, check=True):
-    if not q2.is_square():
-        raise EmptySetError("No Hughes plane of non-square order exists.")
-    if q2%2 == 0:
-        raise EmptySetError("No Hughes plane of even order exists.")
-    q = q2.sqrt()
-    K = FiniteField(q2, prefix='x', conway=True)
-    F = FiniteField(q, prefix='y', conway=True)
-    A = q3_minus_one_matrix(F)
-    A = A.change_ring(K)
-    m = K.list()
-    V = VectorSpace(K, 3)
-    zero = K.zero()
-    one = K.one()
-    points = [(x, y, one) for x in m for y in m] + \
-             [(x, one, zero) for x in m] + \
-             [(one, zero, zero)]
-    relabel = {tuple(p):i for i,p in enumerate(points)}
-    blcks = []
-    for a in m:
-        if a not in F or a == 1:
-            # build L(a)
-            aa = ~ a
-            l = []
-            l.append(V((-a, one, zero)))
-            for x in m:
-                y = - aa * (x+one)
-                if not y.is_square():
-                    y *= aa**(q-1)
-                l.append(V((x, y, one)))
-            # compute the orbit of L(a)
-            blcks.append([relabel[normalize_hughes_plane_point(p,q)] for p in l])
-            for i in range(q2 + q):
-                l = [A*j for j in l]
-                blcks.append([relabel[normalize_hughes_plane_point(p,q)] for p in l])
-    from bibd import BalancedIncompleteBlockDesign
-    return BalancedIncompleteBlockDesign(q2**2+q2+1, blcks, check=check)
-  \end{lstlisting}
-\newpage
+Dans cette section, je vais détailler les étapes nécessaires pour intégrer une fonction en Sage et ensuite la proposer sur le trac. Je prendrais l'exemple de la fonction \texttt{HughesPlane} (dont le code est visible dans l'annexe 1 et la documentation entière dans l'annexe 2).\bigskip\\ 
 Après avoir codé une nouvelle fonction en langage Python, il est nécessaire de la tester avec le logiciel sage:
 \begin{center}
 \includegraphics[scale=0.7]{hughessage.png}\vspace{1\baselineskip}\\
@@ -494,59 +463,20 @@ Test de la fonction dans Sage
 \end{center}
 \medskip
 Si il n'y a pas de soucis de fonctionnement, on peut alors copier notre fonction dans le code de Sage. Nous allons ici le mettre dans le fichier \texttt{block\_design.py} dans le dossier \texttt{sage/src/sage/combinat/designs/}.\medskip\\
-Toute fonction de Sage doit être accompagnée d'une documentation avec un format bien défini dont voici quelques extraits.\\
-\begin{lstlisting}
-def HughesPlane(q2, check=True):
-    r"""
-    Return the Hughes projective plane of order ``q2``.
-
-    Let `q` be an odd prime, the Hughes plane of order `q^2` is a finite
-    projective plane of order `q^2` introduced by D. Hughes in [Hu57]_. Its
-    construction is as follows.
-    [...]
-    For more information, see :wikipedia:`Hughes_plane` and [We07].
-
-    INPUT:
-
-    - ``q2`` -- an even power of an odd prime number
-
-    - ``check`` -- (boolean) Whether to check that output is correct before
-      returning it. As this is expected to be useless (but we are cautious
-      guys), you may want to disable it whenever you want speed. Set to
-      ``True`` by default.
-
-    EXAMPLES::
-
-        sage: H = designs.HughesPlane(9)
-        sage: H
-        (91,10,1)-Balanced Incomplete Block Design
-    [...]
-        
-    TESTS:
-
-    Some wrong input::
-
-        sage: designs.HughesPlane(5)
-        Traceback (most recent call last):
-        ...
-        EmptySetError: No Hughes plane of non-square order exists.
-    [...]
-    """
-\end{lstlisting}
-\newpage
-Cette documentation doit contenir une phrase courte de description de la fonction. Ensuite une description plus complète peut être écrite. Si les sorties et les entrées de la fonction ne sont pas évidentes, il faut ajouer un bloc INPUT et un bloc OUTPUT. Comme on le voit ici, il est possible d'écrire des formules en LaTEX dans un bloc MATH, de faire des références à un article wikipedia, un site, une autre fonction. La documentation doit aussi contenir des exemples d'utilisation de la fonction et éventuellement des tests.\smallskip\\
+Toute fonction de Sage doit être accompagnée d'une documentation avec un format bien défini.
+Elle doit contenir une phrase courte de description de la fonction. Ensuite une description plus complète peut être écrite. Si les sorties et les entrées de la fonction ne sont pas évidentes, il faut ajouer un bloc INPUT et un bloc OUTPUT. Comme on le voit ici, il est possible d'écrire des formules en LaTEX dans un bloc MATH, de faire des références à un article wikipedia, un site, une autre fonction. La documentation doit aussi contenir des exemples d'utilisation de la fonction et éventuellement des tests.\smallskip\\
 Le manuel de référence de Sage est ensuite automatiquement construit à partir de cette documentation:
 \begin{center}
   \includegraphics[scale=0.52]{hughesdocmanual.png}\\
   Extrait de la documentation dans le manuel de référence
 \end{center}
 \bigskip
-\begin{minipage}{0.4\linewidth}
   On peut maintenant construire la librairie de Sage en utilisant la commande \texttt{sage -b} dans un terminal. Les modifications qu'on a apporté seront maintenant prises en compte lorsqu'on utilisera Sage. Il est souvent nécessaire d'utiliser la commande \texttt{sage -t block\_design.py} qui permet de tester les exemples mis dans la documentation et éventuellement d'afficher les erreurs dans le cas où il y en a.
-\end{minipage}\hfill
-\begin{minipage}{0.55\linewidth}
-  \includegraphics[scale=0.4]{hugheserror.png}
-\end{minipage}
+\begin{center}
+ \includegraphics[scale=0.7]{hugheserror.png}
+\end{center}
+
+
 
 
 
@@ -629,7 +559,7 @@ def blocking_set(s):
     p.set_objective(p.sum(b[v] for v in s._points))
     for i in s._blocks:
         p.add_constraint(p.sum(b[k] for k in i)>=1)
-        # Chaque ligne doit etre intersectee 
+        # On doit passer par chaque ligne
 
         p.add_constraint(p.sum(b[k] for k in i)<=len(i)-1)
         # Aucune ligne ne doit etre contenue entiere 
@@ -665,12 +595,170 @@ En plus de l'utiliser pour participer au développement de Sage, git m'a permis 
 \newpage
 \section*{Bilan}
 En regardant l'intitulé de mon sujet de stage, je pense avoir aujourd'hui avoir tout assimilé et avoir atteint mes objectifs. Mon stage n'étant pas fini, il me reste encore quelques semaines pour m'occuper du ticket sur les arcs et les blocking sets, m'intéresser aux plans de Hall et peut-être implémenter une fonction dans Sage pour construire ces plans aussi. J'ai compris comment le développement de Sage se faisait et acquis beaucoup de connaissances en Python.\\
-J'ai appris de nouveaux concepts mathématiques et j'ai du me mettre à lire la littérature anglophone, bien plus vaste que la littérature disponible en français, tant sur les plans projectifs que pour le développement de Sage et les outils de programmation.\\
-J'ai surtout pu observer la vie d'un laboratoire de recherche en informatique et le métier de chercheur.
+
+\newpage
+\thispagestyle{empty}
+\section*{Annexe 1}
+\begin{lstlisting}
+def HughesPlane(q2, check=True):
+    if not q2.is_square():
+        raise EmptySetError("No Hughes plane of non-square order exists.")
+    if q2%2 == 0:
+        raise EmptySetError("No Hughes plane of even order exists.")
+    q = q2.sqrt()
+    K = FiniteField(q2, prefix='x', conway=True)
+    F = FiniteField(q, prefix='y', conway=True)
+    A = q3_minus_one_matrix(F)
+    A = A.change_ring(K)
+    m = K.list()
+    V = VectorSpace(K, 3)
+    zero = K.zero()
+    one = K.one()
+    points = [(x, y, one) for x in m for y in m] + \
+             [(x, one, zero) for x in m] + \
+             [(one, zero, zero)]
+    relabel = {tuple(p):i for i,p in enumerate(points)}
+    blcks = []
+    for a in m:
+        if a not in F or a == 1:
+            # build L(a)
+            aa = ~ a
+            l = []
+            l.append(V((-a, one, zero)))
+            for x in m:
+                y = - aa * (x + one)
+                if not y.is_square():
+                    y *= aa**(q - 1)
+                l.append(V((x, y, one)))
+            # compute the orbit of L(a)
+            blcks.append([relabel[normalize_hughes_plane_point(p,q)] for p in l])
+            for i in range(q2 + q):
+                l = [A*j for j in l]
+                blcks.append([relabel[normalize_hughes_plane_point(p,q)] for p in l])
+    from bibd import BalancedIncompleteBlockDesign
+    return BalancedIncompleteBlockDesign(q2**2+q2+1, blcks, check=check)
+\end{lstlisting}
+\bigskip
+Ligne 9 : \texttt{q3\_minus\_one\_matrix()} est une fonction que j'ai faite pour nous donner une matrice vérifiant les propriétés énoncées pour le plan de Hughes. \smallskip\\
+Ligne 10 : \texttt{.change\_ring()} est une méthode qui sert à ce que les éléments de $GF(q)$ soient considérés comme des éléments de $GF(q^2)$.\smallskip\\
+Ligne 18 : on a besoin de \texttt{relabel} pour associer aux coordonées des points un numéro de point qui sera plus simple à traiter ensuite.\smallskip\\
+Ligne 23 : ~a est l'inverse de a.\smallskip\\
+Ligne 32 : \texttt{normalize\_hughes\_plane\_point()} est une fonction que j'ai faite pour normaliser les points ayant des coordonnées équivalentes.\smallskip\\
+Ligne 37 : \texttt{check} est une variable booléenne qui fera vérifier que la structure qu'on lui donne est bien un \texttt{BalancedIncompleteBlockDesign} si sa valeur. Elle se met à True si non-renseignée mais peut-être mise à False pour accélérer les programmes.
+\newpage
+\thispagestyle{empty}
+\section*{Annexe 2}
+\begin{lstlisting}
+def HughesPlane(q2, check=True):
+    r"""
+    Return the Hughes projective plane of order ``q2``.
+
+    Let `q` be an odd prime, the Hughes plane of order `q^2` is a finite
+    projective plane of order `q^2` introduced by D. Hughes in [Hu57]_. Its
+    construction is as follows.
+
+    Let `K = GF(q^2)` be a finite field with `q^2` elements and `F = GF(q)
+    \subset K` be its unique subfield with `q` elements. We define a twisted
+    multiplication on `K` as
+
+    .. MATH::
+
+        x \circ y =
+        \begin{cases}
+        x\ y & \text{if y is a square in K}\\
+        x^q\ y & \text{otherwise}
+        \end{cases}
+
+    The points of the Hughes plane are the triples `(x, y, z)` of points in `K^3
+    \backslash \{0,0,0\}` up to the equivalence relation `(x,y,z) \sim (x \circ
+    k, y \circ k, z \circ k)` where `k \in K`.
+
+    For `a = 1` or `a \in (K \backslash F)` we define a block `L(a)` as the set
+    of triples `(x,y,z)` so that `x + a \circ y + z = 0`. The rest of the blocks
+    are obtained by letting act the group `GL(3, F)` by its standard action.
+
+    For more information, see :wikipedia:`Hughes_plane` and [We07].
+
+    .. SEEALSO::
+
+        :func:`DesarguesianProjectivePlaneDesign` to build the Desarguesian
+        projective planes
+
+    INPUT:
+
+    - ``q2`` -- an even power of an odd prime number
+
+    - ``check`` -- (boolean) Whether to check that output is correct before
+      returning it. As this is expected to be useless (but we are cautious
+      guys), you may want to disable it whenever you want speed. Set to
+      ``True`` by default.
+
+    EXAMPLES::
+
+        sage: H = designs.HughesPlane(9)
+        sage: H
+        (91,10,1)-Balanced Incomplete Block Design
+
+    We prove in the following computations that the Desarguesian plane ``H`` is
+    not Desarguesian. Let us consider the two triangles `(0,1,10)` and `(57, 70,
+    59)`. We show that the intersection points `D_{0,1} \cap D_{57,70}`,
+    `D_{1,10} \cap D_{70,59}` and `D_{10,0} \cap D_{59,57}` are on the same line
+    while `D_{0,70}`, `D_{1,59}` and `D_{10,57}` are not concurrent::
+
+        sage: blocks = H.blocks()
+        sage: line = lambda p,q: (b for b in blocks if p in b and q in b).next()
+
+        sage: b_0_1 = line(0, 1)
+        sage: b_1_10 = line(1, 10)
+        sage: b_10_0 = line(10, 0)
+        sage: b_57_70 = line(57, 70)
+        sage: b_70_59 = line(70, 59)
+        sage: b_59_57 = line(59, 57)
+
+        sage: set(b_0_1).intersection(b_57_70)
+        {2}
+        sage: set(b_1_10).intersection(b_70_59)
+        {73}
+        sage: set(b_10_0).intersection(b_59_57)
+        {60}
+
+        sage: line(2, 73) == line(73, 60)
+        True
+
+        sage: b_0_57 = line(0, 57)
+        sage: b_1_70 = line(1, 70)
+        sage: b_10_59 = line(10, 59)
+
+        sage: p = set(b_0_57).intersection(b_1_70)
+        sage: q = set(b_1_70).intersection(b_10_59)
+        sage: p == q
+        False
+
+    TESTS:
+
+    Some wrong input::
+
+        sage: designs.HughesPlane(5)
+        Traceback (most recent call last):
+        ...
+        EmptySetError: No Hughes plane of non-square order exists.
+
+        sage: designs.HughesPlane(16)
+        Traceback (most recent call last):
+        ...
+        EmptySetError: No Hughes plane of even order exists.
+
+    Check that it works for non-prime `q`::
+
+        sage: designs.HughesPlane(3**4)    # not tested - 10 secs
+        (6643,82,1)-Balanced Incomplete Block Design
+    """
+\end{lstlisting}       
+\thispagestyle{empty}
 \newpage
 \thispagestyle{empty}
 
-\section*{Annexes}
+\section*{Annexe 3}
 \includegraphics[scale=0.43]{dobble1.png}
 \includegraphics[scale=0.43]{dobble2.png}\\
 \includegraphics[scale=0.43]{dobble3.png}
