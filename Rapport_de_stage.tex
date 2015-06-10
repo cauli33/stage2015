@@ -1,6 +1,6 @@
 \documentclass[a4paper]{article}
 
-\title{Rapport de stage}
+
 \usepackage[utf8]{inputenc}
 \usepackage[francais]{babel}
 \usepackage{amsmath}
@@ -41,16 +41,33 @@ literate={~} {$\sim$}{1},
 numbers=left
 }
 \thispagestyle{empty}
+\hspace{-2cm}
+\begin{tikzpicture}
+  \node at (0, 21) {\Huge Rapport de stage};
+  \node at (0, 20) {\Large Les designs combinatoires et le logiciel Sage} ;
+\coordinate (P7) at (-7,0);
+\coordinate (P5) at (7,0);
+\coordinate (P1) at (0,18);
+\coordinate (P6) at (barycentric cs:P5=1,P7=1);
+\coordinate (P3) at (barycentric cs:P1=1.2,P7=1);
+\coordinate (P2) at (barycentric cs:P1=1.2,P5=1);
+\coordinate (P4) at (barycentric cs:P6=2,P1=1);
 
+\node[anchor=west] at (-8,17) {\Large Quentin Honoré};
+\node[anchor=east] at (9,16.5) {\large Maitre de stage : Vincent Delecroix};
+\node[anchor=east] at (9,16) {\large Tuteur enseignant : Cédric Jai};
+\node[anchor=east] at (9,20.5) {\includegraphics[scale=0.12]{inp.png}};
+\node[anchor=west] at (-9,20.5) {\includegraphics[scale=0.35]{CPP.png}};
+\node[anchor=west] at (-8,16) {\Large Du 4 Mai au 26 Juin};
+\draw[thick] (P1) -- (P7) -- (P5) -- cycle;
+\draw[thick] (P3) -- (P5);
+\draw[thick] (P1) -- (P6);
+\draw[thick] (P2) -- (P7);
 
-\vspace{1cm}
-\begin{center}
-{\Huge Rapport de stage} \\ \vspace{0.2cm}
-{\LARGE LaBRI du 4 Mai au 26 Juin}\\ \vspace{0.3cm}
-{\large Quentin Honoré} \\
-\end{center}
-\hspace{-1.5cm}
-\includegraphics[scale = 0.95]{garde.pdf}
+\draw[thick] (P3) .. controls (-3,2) .. (P6) .. controls (3,2) .. (P2) .. controls (0,12) .. (P3);
+\foreach \x in {1,2,3,4,5,6,7}
+  \node at (P\x) {\includegraphics[scale=0.3]{dobble\x.png}};
+\end{tikzpicture}
 \newpage
 \thispagestyle{empty}
 \strut
@@ -58,12 +75,14 @@ numbers=left
 \tableofcontents
 \newpage
 \section*{Remerciements}
+\addcontentsline{toc}{section}{Remerciements}
 En premier lieu, je tiens à remercier mon maître de stage, Mr Vincent DELECROIX pour m'avoir accueilli chaleureusement, accompagné et aidé au cours de ces 8 semaines de stage. Je lui suis reconnaissant pour le temps qu'il m'a consacré.\\
 Je remercie mon tuteur, Mr Jai pour le suivi tout au long de mon stage.\\
 Je remercie Mme Hinnenberger et Mme Roubineau de m'avoir accueilli pour répondre à mes questions sur l'organisation du LaBRI.\\
 Enfin, je remercie l'équipe entière du LaBRI de m'avoir proposé ce stage et de m'avoir accueilli pendant ces 8 semaines dans leur établissement.
 \newpage
 \section*{Introduction}
+\addcontentsline{toc}{section}{Introduction}
 Ce rapport est consacré au stage que j'ai effectué dans le cadre de ma formation à la Prépa des INP. Je devais effectuer un stage d'une durée minimale de 6 semaines afin de découvrir les métiers correspondant à ma formation.
 J'ai donc fait mon stage au LaBRI, Laboratoire de Recherche Informatique à Bordeaux, du 4 Mai au 26 Juin où l'on m'a proposé un stage avec pour sujet ``\textit{Les designs combinatoires et le logiciel Sage}''.\\
 Ce stage m'a permis de mettre en pratique les connaissances acquises pendant les cours d'Informatique à la Prépa des INP, le logiciel Sage étant basé sur le langage de programmation Python. Il m'a permis d'acquérir de nouvelles compétences sur la programmation en Python et sur les méthodes de développement d'un logiciel open source avec par exemple le logiciel git et sur la rédaction des textes (y compris ce rapport) avec \LaTeX. J'ai aussi commencé à lire la littérature anglophone, bien plus vaste que la littérature disponible en français, tant sur les plans projectifs que pour le développement de Sage et les outils de programmation. \\
@@ -549,7 +568,7 @@ def arc(s):
         raise EmptySetError('There is  no arc in this incidence structure.')
 \end{lstlisting}
 La méthode \textbf{try}/\textbf{except} permet de tester un énoncé sans craindre les erreurs qui pourraient arrêter le programme. Ici, si \textit{p.solve()} fonctionne (i.e. on trouve des solutions à ce problème linéaire), alors on renvoie les résultats. Si l'erreur MIPSolverException est générée par le solveur (i.e. il ne trouve pas de solutions), on choisit alors de renvoyer l'erreur EmptySetError qui correspond aux cas où l'ensemble des solutions est vide.
-
+\newpage
 \begin{lstlisting}
 def blocking_set(s):
     p=MixedIntegerLinearProgram(maximization=False)
@@ -594,11 +613,14 @@ En plus de l'utiliser pour participer au développement de Sage, git m'a permis 
 
 \newpage
 \section*{Bilan}
+\addcontentsline{toc}{section}{Bilan}
 En regardant l'intitulé de mon sujet de stage, je pense avoir aujourd'hui avoir tout assimilé et avoir atteint mes objectifs. Mon stage n'étant pas fini, il me reste encore quelques semaines pour m'occuper du ticket sur les arcs et les blocking sets, m'intéresser aux plans de Hall et peut-être implémenter une fonction dans Sage pour construire ces plans aussi. J'ai compris comment le développement de Sage se faisait et acquis beaucoup de connaissances en Python.\\
 
 \newpage
 \thispagestyle{empty}
+\addcontentsline{toc}{section}{Annexes}
 \section*{Annexe 1}
+Code de la fonction \texttt{HughesPlane}
 \begin{lstlisting}
 def HughesPlane(q2, check=True):
     if not q2.is_square():
@@ -648,6 +670,7 @@ Ligne 37 : \texttt{check} est une variable booléenne qui fera vérifier que la 
 \newpage
 \thispagestyle{empty}
 \section*{Annexe 2}
+Documentation de la fonction \texttt{HughesPlane}
 \begin{lstlisting}
 def HughesPlane(q2, check=True):
     r"""
@@ -759,6 +782,7 @@ def HughesPlane(q2, check=True):
 \thispagestyle{empty}
 
 \section*{Annexe 3}
+Dobble à 7 cartes\bigskip\\
 \includegraphics[scale=0.43]{dobble1.png}
 \includegraphics[scale=0.43]{dobble2.png}\\
 \includegraphics[scale=0.43]{dobble3.png}
