@@ -38,38 +38,16 @@ commentstyle=\color{comment-col}\ttfamily,
 showstringspaces=false
 }
 \thispagestyle{empty}
+
+
+\vspace{1cm}
 \begin{center}
-
-\centering
-
-\vspace{3cm}
-
 {\Huge Rapport de stage \ldots} \\ \vspace{0.3cm}
 {\large Quentin Honoré}
-
-\vspace{2cm}
-
-\begin{tikzpicture}
-
-\coordinate (P7) at (-7,0);
-\coordinate (P5) at (7,0);
-\coordinate (P1) at (0,18);
-\coordinate (P6) at (barycentric cs:P5=1,P7=1);
-\coordinate (P3) at (barycentric cs:P1=1.2,P7=1);
-\coordinate (P2) at (barycentric cs:P1=1.2,P5=1);
-\coordinate (P4) at (barycentric cs:P6=2,P1=1);
-
-\draw[thick] (P1) -- (P7) -- (P5) -- cycle;
-\draw[thick] (P3) -- (P5);
-\draw[thick] (P1) -- (P6);
-\draw[thick] (P2) -- (P7);
-
-\draw[thick] (P3) .. controls (-3,2) .. (P6) .. controls (3,2) .. (P2) .. controls (0,12) .. (P3);
-
-\foreach \x in {1,2,3,4,5,6,7}
-  \node at (P\x) {\includegraphics[scale=0.3]{dobble\x.png}};
-\end{tikzpicture}
 \end{center}
+\hspace{-1.5cm}
+\includegraphics{garde.pdf}
+
 \newpage
 \tableofcontents
 \newpage
