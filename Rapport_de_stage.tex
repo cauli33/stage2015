@@ -11,6 +11,7 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{verbatim}
+\usepackage{bm}
 \usepackage{sagetex}
 \usepackage{array,multirow,makecell}
 \usepackage{amssymb}
@@ -19,7 +20,7 @@
 \usepackage{hyperref}
 
 \definecolor{string-col}{rgb}{0.8,0.1,0.1}
-\definecolor{keyword-col}{rgb}{0.1,0.1,0.8}
+\definecolor{keyword-col}{rgb}{0.2,0.2,0.6}
 \definecolor{comment-col}{rgb}{0.5,0.5,0.5}
 
 \newtheorem{Def}{Définition}[section]
@@ -35,7 +36,9 @@ language=Python,
 keywordstyle=\color{keyword-col}\bfseries,
 stringstyle=\color{string-col}\ttfamily,
 commentstyle=\color{comment-col}\ttfamily,
-showstringspaces=false
+showstringspaces=false,
+literate={~} {$\sim$}{1},
+numbers=left
 }
 \thispagestyle{empty}
 
@@ -173,10 +176,10 @@ Le jeu du Dobble est un exemple de plan projectif fini. Si vous ne le connaissez
 \includegraphics[scale=0.3]{dobble-2.jpg}
 \end{center}
 Avec 8 symboles par carte, on a donc un plan projectif d'ordre 7. Or $7^2+7+1=57$, il manque donc 2 cartes au Dobble! Si on étudie les cartes, on voit bien que le bonhomme de neige n'apparait que sur 6 cartes et quelques autres symboles sur 7 cartes. On arrive au même jeu si l'on construit nous même un plan projectif d'ordre 7 et qu'on retire 2 droites passant par un même point à la fin.
-En ajoutant ces deux cartes manquantes, le jeu du Dobble vérifie toutes les propriétés des plans projectifs. Néanmoins, même avec 2 cartes en moins, le Dobble garde sa propriété la plus importante: il y a toujours un unique symbole pour deux cartes même en enlevant 2 cartes.\vspace{1\baselineskip}\\
-J'ai pu me procurer un jeu du Dobble. En numérotant les symboles (bonhomme orange $\rightarrow$ 0, bombe $\rightarrow$ 1, ..., igloo $\rightarrow$ 56), j'ai pu créer la liste des droites en ajoutant les 2 cartes manquantess.
+En ajoutant ces deux cartes manquantes, le jeu du Dobble vérifie toutes les propriétés des plans projectifs. Néanmoins, même avec 2 cartes en moins, le Dobble garde sa propriété la plus importante: il y a toujours un unique symbole pour deux cartes même en enlevant 2 cartes. Ceci est d'ailleurs vrai pour tout sous-ensemble du jeu du Dobble. Que l'on prenne deux cartes d'un sous-ensemble ou deux cartes du jeu complet, tant que le jeu de base a été construit avec cette propriété, on aura toujours un symbole en commun.\vspace{1\baselineskip}\\
+J'ai pu me procurer un jeu du Dobble. En numérotant les symboles (bonhomme orange $\rightarrow$ 0, bombe $\rightarrow$ 1, ..., igloo $\rightarrow$ 56), j'ai pu créer la liste des droites en ajoutant les 2 cartes manquantes et les manipuler avec le logiciel Sage.
 \begin{sageverbatim}
-  sage: blocks = [[6,11,21,27,43,50,53,55],[4,10,20,26,35,39,48,53],
+ sage: blocks = [[6,11,21,27,43,50,53,55],[4,10,20,26,35,39,48,53],
         [8,10,28,31,34,45,54,55]], ... ,[0,46,48,34,32,27,52,14]]
 \end{sageverbatim}
 Après avoir importé la classe \texttt{BalancedIncompleteBlockDesign}, on peut créer le plan projectif du Dobble:
@@ -191,7 +194,7 @@ Le Dobble est un plan projectif d'ordre 7.
 \newpage
 Je me suis alors servi d'un programme que j'avais précédemment fait pour les plans de Hughes. La fonction \texttt{is\_desarguesian\_plane} itère sur les paires de triangles (non-plats) simplement pour vérifier que la propriété de Desargues est vérifiée. En pratique, si un plan n'est pas desarguesien, le programme affiche rapidement des centaines de paires de triangle pour lesquelles le théorème n'est pas vérifié et il n'est pas nécessaire de laisser tourner le programme plus longtemps:
 \begin{sageverbatim}
-  sage: is_desarguesian_plane(B)
+ sage: is_desarguesian_plane(B)
   
 \end{sageverbatim}
 J'ai laissé tourner le programme longtemps mais celui-ci est beaucoup trop long. Il est généralement simple de vérifier qu'un plan n'est pas desarguesien mais il serait intéressant de trouver une méthode efficace pour savoir si un plan est desarguesien.\\ 
@@ -269,28 +272,28 @@ $\mathbb{F}_3 $\\
 $\mathbb{F}_4$\\
 \begin{tabular}{|c|c|c|c|c|}
   \hline
-  + & \textbf{0} & \textbf{1} & \textbf{x} & \textbf{x+1} \\
+  + & \textbf{0} & \textbf{1} & $\bm{x}$ & $\bm{x+1}$ \\
   \hline
   \textbf{0} & 0 & 1 & $x$ & $x+1$ \\
   \hline
   \textbf{1} & 1 & 0 & $x+1$ & $x$ \\
   \hline
-  \textbf{x} & $x$ & $x+1$ & 0 & 1 \\
+  $\bm{x}$ & $x$ & $x+1$ & 0 & 1 \\
   \hline
-  \textbf{x+1} & $x+1$ & $x$ & 1 & 0 \\
+  $\bm{x+1}$ & $x+1$ & $x$ & 1 & 0 \\
   \hline
 \end{tabular}
 \begin{tabular}{|c|c|c|c|c|}
   \hline
-  $*$ & \textbf{0} & \textbf{1} & $\textbf{x}$ & $\textbf{x+1}$ \\
+  $*$ & \textbf{0} & \textbf{1} & $\bm{x}$ & $\bm{x+1}$ \\
   \hline
   \textbf{0} & 0 & 0 & 0 & 0 \\
   \hline
   \textbf{1} & 0 & 1 & $x$ & $x+1$ \\
   \hline
-  \textbf{x} & 0 & $x$ & $x+1$ & 1 \\
+  $\bm{x}$ & 0 & $x$ & $x+1$ & 1 \\
   \hline
-  \textbf{x+1} & 0 & $x+1$ & 1 & $x$\\
+  $\bm{x+1}$ & 0 & $x+1$ & 1 & $x$\\
   \hline
 \end{tabular}
 \end{center}
@@ -443,7 +446,7 @@ Tous les fichiers dont je parle ici sont dans le répertoire \texttt{sage/src/sa
 \end{itemize}  
 \newpage
 \subsection{Ajout d'une fonction dans Sage}
-Dans cette section, je vais détailler les étapes nécessaires pour intégrer une fonction en Sage et ensuite la proposer sur le trac. Je prendrais l'exemple de la fonction \texttt{HughesPlane}.\medskip\\
+Dans cette section, je vais détailler les étapes nécessaires pour intégrer une fonction en Sage et ensuite la proposer sur le trac. Je prendrais l'exemple de la fonction \texttt{HughesPlane}.\medskip\\ 
 \begin{lstlisting}
 def HughesPlane(q2, check=True):
     if not q2.is_square():
@@ -467,7 +470,7 @@ def HughesPlane(q2, check=True):
     for a in m:
         if a not in F or a == 1:
             # build L(a)
-            aa = ~a
+            aa = ~ a
             l = []
             l.append(V((-a, one, zero)))
             for x in m:
@@ -556,7 +559,7 @@ Le manuel de référence de Sage est ensuite automatiquement construit à partir
   $x + 2y \leq 4$\\
   $5z - y \leq 8$\\
   La solution ici est $x = 4, y = 0, z = 1.6$\vspace{1\baselineskip}\\
-La programmation linéaire lorsqu'on l'utilise est pour nous une boite noire. Le fonctionnement de cette boite est compliqué et bien optimisé. Il nous évite la programmation de grandes boucles très couteuses et bien trop longues dès que l'on a suffisamment de variables. Ces boucles testeraient alors toutes les combinaisons pour chercher celle qui maximise la fonction objectif (et encore, cette méthode n'est pas vraiment possible sur les réels ou les entiers).\\
+Nous utilisons la programmation linéaire comme une boite noire. Le fonctionnement de cette boite est compliqué et bien optimisé. Il nous évite la programmation de grandes boucles très couteuses et bien trop longues dès que l'on a suffisamment de variables. Ces boucles testeraient alors toutes les combinaisons pour chercher celle qui maximise la fonction objectif (et encore, cette méthode n'est pas vraiment possible sur les réels ou les entiers).\\
 C'est un outil très utile pour les problèmes combinatoires.\vspace{1\baselineskip}\\
 \textbf{Exemple}\\
   Pour comprendre les problèmes que l'on va chercher à résoudre, nous allons prendre un exemple plus concret:\vspace{1\baselineskip} \\
@@ -573,18 +576,18 @@ C'est un outil très utile pour les problèmes combinatoires.\vspace{1\baselines
   Grâce à la programmation linéaire, on pourra donc savoir quelle combinaison d'objets pouvant rentrer dans notre sac est la plus utile.
 \newpage
 \subsubsection*{Dans Sage}
-Nous avons dans Sage la classe $MixedIntegerLinearProgram$ qui représente les programmes linéaires que nous avons vu.
+Nous avons dans Sage la classe \texttt{MixedIntegerLinearProgram} qui représente les programmes linéaires que nous avons vu.
 Nous allons résoudre le premier exemple avec Sage:
 \begin{sageverbatim}
-sage: p = MixedIntegerLinearProgram()
-sage: x, y, z = p['x'], p['y'], p['z']    # on definit les variables
-sage: p.set_objective( x + y + 3*z )
-sage: p.add_constraint( x + 2*y <= 4 )
-sage: p.add_constraint ( 5*z - y <= 8 )
-sage: p.solve()         # sage nous retourne la valeur maximale de l'objectif
-8.8
-sage: p.get_values(x,y,z)    # on peut demander les valeurs des variables
-[4.0, 0.0, 1.6]
+ sage: p = MixedIntegerLinearProgram()
+ sage: x, y, z = p['x'], p['y'], p['z']    # on definit les variables
+ sage: p.set_objective( x + y + 3*z )
+ sage: p.add_constraint( x + 2*y <= 4 )
+ sage: p.add_constraint ( 5*z - y <= 8 )
+ sage: p.solve()         # sage nous retourne la valeur maximale de l'objectif
+ 8.8
+ sage: p.get_values(x,y,z)    # on peut demander les valeurs des variables
+ [4.0, 0.0, 1.6]
 \end{sageverbatim}
 \subsubsection*{Les fonctions arc et blocking\_set}
 La programmation linéaire va nous être utile pour trouver les arcs et les blocking set dans les plans projectifs finis. En effet, en associant une valeur binaire à chaque point du plan : 1 si on prend le point dans l'ensemble recherché, 0 sinon.\\
@@ -599,14 +602,14 @@ from sage.categories.sets_cat import EmptySetError
 def arc(s):   
     p = MixedIntegerLinearProgram()
     b = p.new_variable(binary=True)
-# La variable b comme une variable binaire #
+    # La variable b est une variable binaire 
 
     p.set_objective(p.sum(b[v] for v in s._points))
-# Notre objectif est le nombre de points dans notre arc #
+    # Notre objectif est le nombre de points dans notre arc 
 
     for i in s._blocks:
         p.add_constraint(p.sum(b[k] for k in i) <= 2)
-# On ne doit avoir au maximum que deux points d'un arc sur une ligne #
+    # On ne doit avoir au maximum que deux points d'un arc sur une ligne 
         
     try:
         p.solve()
@@ -620,16 +623,16 @@ La méthode \textbf{try}/\textbf{except} permet de tester un énoncé sans crain
 \begin{lstlisting}
 def blocking_set(s):
     p=MixedIntegerLinearProgram(maximization=False)
-# On minimise plutot que maximise #
+    # On minimise plutot que maximise 
 
     b=p.new_variable(binary=True)
     p.set_objective(p.sum(b[v] for v in s._points))
     for i in s._blocks:
         p.add_constraint(p.sum(b[k] for k in i)>=1)
-# Chaque ligne doit etre intersectee #
+        # Chaque ligne doit etre intersectee 
 
         p.add_constraint(p.sum(b[k] for k in i)<=len(i)-1)
-# Aucune ligne ne doit etre contenue entiere #
+        # Aucune ligne ne doit etre contenue entiere 
         
     try:
         p.solve()
@@ -640,7 +643,6 @@ def blocking_set(s):
     incidence structure')  
 \end{lstlisting}
 \vspace{1\baselineskip}
-Les fonctions $blocking\_set$ et $arc$ ont été proposées sur le trac de Sage. A ce jour, elles sont encore en discussion sur le ticket $\#18608$.\vspace{3\baselineskip}\\
 
 \textbf{Remarque}\\
 Ces programmes pour trouver les arcs et les blocking set des plans projectifs sont efficaces pour les plans de petite taille mais deviennent trop lents pour des plans d'ordre suffisamment grands. Ceci est du au MIPSolver qui n'est pas assez efficace lorsque le nombre de variables est trop grand (étant donné que ce nombre évolue en $k^2 + k + 1$ par rapport à l'ordre).\\
